@@ -3,8 +3,9 @@
 ## Anggota Kelompok
 - Darrel Danadyaksa Poli (2206081995)
 - Adrasa Cantya Salaka (2206829603)
-- Surya Raavi Adiputra
-- Dhemas Wicaksono Nugroho
+- Surya Raavi Adiputra (2206082404)
+- Dhemas Wicaksono Nugroho (2206030786)
+
 
 ## Deskripsi Aplikasi
 Judul Aplikasi: **UlasBuku**
@@ -19,7 +20,7 @@ Aplikasi **UlasBuku** akan memiliki beberapa modul utama, termasuk:
 4. **Pesan Sesama Pengguna**: Pengguna dapat berkomunikasi satu sama lain melalui pesan.
    
 ## Sumber Data
-Data mengenai katalog buku akan diperoleh melalui **Google Books API**. API ini akan memberikan informasi tentang buku-buku yang tersedia, termasuk judul, penulis, sinopsis, dan sampul buku.
+Data mengenai katalog buku akan diperoleh melalui [**Google Books API**](https://developers.google.com/books/). API ini akan memberikan informasi tentang buku-buku yang tersedia, termasuk judul, penulis, sinopsis, dan sampul buku.
 
 ## Peran Pengguna
 Aplikasi **UlasBuku** akan memiliki beberapa peran pengguna beserta deskripsinya:
