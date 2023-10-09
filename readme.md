@@ -19,7 +19,7 @@ Aplikasi **UlasBuku** akan memiliki beberapa modul utama, termasuk:
 4. **Pesan Sesama Pengguna**: Pengguna dapat berkomunikasi satu sama lain melalui pesan.
    
 ## Sumber Data
-Data mengenai katalog buku akan diperoleh melalui **Google Books API**. API ini akan memberikan informasi tentang buku-buku yang tersedia, termasuk judul, penulis, sinopsis, dan sampul buku.
+Data mengenai katalog buku akan diperoleh melalui [**Google Books API**](developers.google.com/). API ini akan memberikan informasi tentang buku-buku yang tersedia, termasuk judul, penulis, sinopsis, dan sampul buku.
 
 ## Peran Pengguna
 Aplikasi **UlasBuku** akan memiliki beberapa peran pengguna beserta deskripsinya:
