@@ -1,6 +1,9 @@
 :root {
   --primary: #5a6794;
   --bg: #8794c0;
+  --text: #eaf2d7;
+  --text1: #ffa69e;
+  --text2: #ff7e6b;
 }
 
 * {
@@ -29,7 +32,7 @@ body {
   align-items: center;
   padding: 1.4rem 7%;
   background-color: rgba(1, 1, 1, 0.8);
-  border-bottom: 1px solid #513c28;
+
   position: fixed;
   top: 0;
   left: 0;
@@ -52,7 +55,7 @@ body {
   color: #fff;
   display: inline-block;
   font-size: 1.3rem;
-  margin: 0 1rem;
+  margin: 0 2rem;
 }
 
 .navbar .navbar-middle a:hover {
