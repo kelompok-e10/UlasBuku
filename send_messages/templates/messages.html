@@ -1,0 +1,18 @@
+{% block content %}
+    <h1>Messages</h1>
+    <h5>Name:</h5>
+    <p>{{user}}</p>
+
+    <h5>Daftar Pengguna:</h5>
+        <ul>
+            {% for other in list_of_user %}
+                {% if user != other %}
+                    <li>{{ other.username }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    <h5>Daftar Pesan:</h5>
+        {% for pesan in messages %}
+            <li>{{ pesan.text }}</li>
+        {% endfor %}
+{% endblock content %}
