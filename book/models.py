@@ -8,7 +8,3 @@ class Book(models.Model):
     year_of_publication = models.IntegerField(null=True, blank=True)
     publisher = models.CharField(null=True, blank=True, max_length=255)
     image_url_s = models.URLField(null=True, blank=True)
-
-    class Meta:
-        db_table = "book_book"  # Ensure the correct table name
-    
