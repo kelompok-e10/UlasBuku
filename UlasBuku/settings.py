@@ -31,22 +31,16 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    'main',
+    'book',
+    'send_messages',
+    'user_profile',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main',
-    'book',
-    'send_messages',
-    'user_profile',
-<<<<<<< HEAD
-    
-=======
-    'django_boostrap_icons',
-    'django_boostrap5'
->>>>>>> 9fbc04355f8b4b5f0cc8795b0f08a1d9a34492f0
 ]
 
 MIDDLEWARE = [
