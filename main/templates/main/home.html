@@ -19,15 +19,13 @@
         <a href="#forum">Forum</a>
         <a href="{% url 'book:show_main_add_book' %}">Tambah Buku</a>
         <a href="{% url 'send_messages:show_messages' %}">Pesan</a>
+        <a href="{% url 'user_profile:view_profile' username=user.username %}">Profile</a>
       </div>
 
       <!-- Right Part -->
       {% if user.is_authenticated %}
       <div class="navbar-right">
-        Welcome,
-        <a href="{% url 'user_profile:view_profile' username=user.username %}"
-          >{{ user.username }}</a
-        >
+        Welcome, {{ user.username }}
         <a href="{% url 'main:logout' %}">Logout</a>
       </div>
       {% else %}

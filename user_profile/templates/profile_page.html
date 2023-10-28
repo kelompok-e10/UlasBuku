@@ -25,83 +25,136 @@
 <!-- User Profile Card -->
 <div class="card">
     <h2>{{ user }}</h2>
-    
     <!-- Menampilkan deskripsi jika ada -->
     {% if user.profile.description %}
-        <p>{{ user.profile.description }}</p>
+        <p id="user-description">{{ user.profile.description }}</p>
     {% endif %}
-    
     <!-- Tombol untuk membuka modal description -->
-    {% if user.is_authenticated %}
-        <a href="#addDescription" class="btn btn-primary" id="addDescriptionBtn">Add Description</a>
-        
-        <!-- Form untuk menambahkan deskripsi -->
-        <form id="addDescriptionForm" style="display: none;">
-            {% csrf_token %}
-            <textarea id="description" name="description" rows="3" cols="50" placeholder="Add your description"></textarea>
-            <button type="submit">Save Description</button>
-        </form>
+    {% if user == request.user %}
+    <button class="btn btn-primary" id="addDescriptionBtn">Edit Description</button>
+    <form id="addDescriptionForm" class="description-form" style="display: none;">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Write about yourself"></textarea>
+        </div>
+        <button type="button" class="btn btn-secondary" id="cancelDescriptionBtn">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="saveDescriptionBtn">Save Description</button>
+    </form>
     {% else %}
-        <a href="#sendMessage" class="btn btn-secondary" id="sendMessageBtn">Send Message</a>
+    <a href="#sendMessage" class="btn btn-secondary" id="sendMessageBtn">Send Message</a>
     {% endif %}
 </div>
 
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const addDescriptionBtn = document.getElementById('addDescriptionBtn');
-    const addDescriptionForm = document.getElementById('addDescriptionForm');
-    
-    addDescriptionBtn.addEventListener('click', function() {
-        addDescriptionForm.style.display = 'block';
-    });
-    
-    addDescriptionForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const description = document.getElementById('description').value;
-        
-        // Kirim permintaan AJAX untuk menyimpan deskripsi
-        fetch(`/user_profile/{{ user.username }}/add_description/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `description=${description}`,
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Deskripsi berhasil disimpan
-                addDescriptionForm.style.display = 'none';
-                // Tampilkan deskripsi yang baru disimpan
-                const descriptionElement = document.createElement('p');
-                descriptionElement.innerText = description;
-                document.querySelector('.card').appendChild(descriptionElement);
-            } else {
-                // Tampilkan pesan kesalahan jika diperlukan
-                console.error(data.error);
-            }
+    document.addEventListener('DOMContentLoaded', function() {
+        const addDescriptionBtn = document.getElementById('addDescriptionBtn');
+        const addDescriptionForm = document.getElementById('addDescriptionForm');
+        const saveDescriptionBtn = document.getElementById('saveDescriptionBtn');
+
+        // Periksa apakah elemen deskripsi pengguna sudah ada
+        const descriptionElement = document.querySelector('#user-description');
+
+        addDescriptionBtn.addEventListener('click', function() {
+            addDescriptionForm.style.display = 'block';
         });
-    });
-    
-    // Fungsi untuk mendapatkan cookie CSRF
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Cari cookie dengan nama yang sesuai
-                if (cookie.substring(0, name.length + 1) === name + '=') {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
+
+        cancelDescriptionBtn.addEventListener('click', function() {
+            addDescriptionForm.style.display = 'none';
+            descriptionTextarea.value = '';  // Mengosongkan teks deskripsi
+        });
+
+        addDescriptionForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const description = document.getElementById('description').value;
+
+            // Kirim permintaan AJAX untuk menyimpan deskripsi
+            fetch(`/user_profile/{{ user.username }}/add_description/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `description=${description}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Deskripsi berhasil disimpan
+                    addDescriptionForm.style.display = 'none';
+                    // Periksa apakah elemen deskripsi pengguna sudah ada
+                    if (descriptionElement) {
+                        // Gantikan deskripsi yang ada dengan yang baru
+                        descriptionElement.innerText = description;
+                    } else {
+                        // Jika elemen deskripsi belum ada, tambahkan elemen baru
+                        const newDescriptionElement = document.createElement('p');
+                        newDescriptionElement.id = 'user-description'; // Set ID untuk elemen deskripsi
+                        newDescriptionElement.innerText = description;
+                        document.querySelector('.card').appendChild(newDescriptionElement);
+                    }
+                } else {
+                    // Tampilkan pesan kesalahan jika diperlukan
+                    console.error(data.error);
+                }
+            });
+        });
+
+        saveDescriptionBtn.addEventListener('click', function() {
+            const description = document.getElementById('description').value;
+
+            // Kirim permintaan AJAX untuk menyimpan deskripsi
+            fetch(`/user_profile/{{ user.username }}/add_description/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `description=${description}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Deskripsi berhasil disimpan
+                    addDescriptionForm.style.display = 'none';
+                    // Periksa apakah elemen deskripsi pengguna sudah ada
+                    if (descriptionElement) {
+                        // Gantikan deskripsi yang ada dengan yang baru
+                        descriptionElement.innerText = description;
+                    } else {
+                        // Jika elemen deskripsi belum ada, tambahkan elemen baru
+                        const newDescriptionElement = document.createElement('p');
+                        newDescriptionElement.id = 'user-description'; // Set ID untuk elemen deskripsi
+                        newDescriptionElement.innerText = description;
+                        document.querySelector('.card').appendChild(newDescriptionElement);
+                    }
+                } else {
+                    // Tampilkan pesan kesalahan jika diperlukan
+                    console.error(data.error);
+                }
+            });
+        });
+
+        // Fungsi untuk mendapatkan cookie CSRF
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Cari cookie dengan nama yang sesuai
+                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
                 }
             }
+            return cookieValue;
         }
-        return cookieValue;
-    }
-});
+    });
+
 </script>
 
 
