@@ -13,11 +13,12 @@
   </nav>
   {% endif %}
   <div class="list-group list-group-flush">
-    {% for user in users %}
+    {% for usr in users %}
     <a href="{% url 'send_messages:messages' user.id %}"
       class="list-group-item{% if selected_user_id == user.id %} list-group-item-secondary{% endif %}">
       {{ user.username }}
-      {% endfor %}
+      {{ usr.username }}
+    {% endfor %}
     </a>
   </div>
 </div>

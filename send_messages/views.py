@@ -31,8 +31,6 @@ def user_messages_by_id(request, selected_user_id):
         text.sender = request.user
         text.recipient = selected_user
         text.save()
-       
-        
         return redirect("send_messages:messages", selected_user_id)
     
     users = User.objects.order_by("username")
@@ -42,6 +40,7 @@ def user_messages_by_id(request, selected_user_id):
     context = {
         'users': users,
         'selected_user_id': selected_user_id,
+        'selected_user': selected_user,
         'messages': messages,
         'form': form,
     }
@@ -55,7 +54,10 @@ def create_text_messages(request):
         text.user = request.user
         text.save()
         return HttpResponseRedirect(reverse('send_messages:show_messages')) 
-    
+     
     context = {'form': form}
     return render(request, "messages.html", context)
 
+@login_required
+def send(request, recipient_id):
+    sender_id = request.user.id
