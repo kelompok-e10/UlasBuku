@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'send_messages',
     'book',
     'user_profile',
+    
 ]
 
 MIDDLEWARE = [

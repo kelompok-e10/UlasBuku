@@ -1,16 +1,20 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
-from .models import User_profile
+from user_profile.models import Profile
+from django.contrib.auth.models import User
+from main.views import register
 
 # Create your views here.
-def view_profile(request, username):
-    user = get_object_or_404(User_profile, user__username=username),
+def view_profile(request):
+    user = get_object_or_404(User),
 
     context = {
-        'name' : user,
-        'age' : user.age,
-        'description' : user.description,
+        'name' : user.username,
+        'description' : user.description
     }
 
     return render(request, 'profile_page.html', context)
+
+def update_user(request):
+    return render(request, "update_user.html", {} )
     

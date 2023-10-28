@@ -1,8 +1,54 @@
-<h1>Profile Page</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ProfilePage</title>
 
-<h5>Name: </h5>
-<p>Pak Bepe</p> <!-- Ubahlah sesuai dengan nama kamu -->
-<h5>Class: </h5>
-<p>PBP A</p> <!-- Ubahlah sesuai dengan kelas kamu -->
+    <!-- style -->
+    <link rel="stylesheet" href="main/static/main/main.css">
+    <style>
+        /* CSS untuk card profil */
+        .user-profile-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f7f7f7;
+        }
+    </style>
+</head>
+<body>
 
-<!-- nanti diubah-->
+<!-- Navbar start -->
+<nav class="navbar">
+    <!-- Navbar logo -->
+    <a href="#" class="navbar-logo"> Ulas<span>Buku</span></a>
+
+    <!-- Middle Part -->
+    <div class="navbar-middle">
+        <a href="#about">About</a>
+        <a href="#forum">Forum</a>
+        <a href="#Reviews">Reviews</a>
+    </div>
+
+    <!-- Right Part -->
+    <div class="navbar-right">
+        <p>Hi {{name}}</p>
+    </div>
+    
+
+</nav>
+
+<!-- User Profile Card -->
+<div class="user-profile-card">
+    <h2>{{ name }}</h2>
+    <p>{{ description }}</p>
+</div>
+
+</body>
+</html>
