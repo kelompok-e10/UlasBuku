@@ -15,7 +15,7 @@ def show_main(request):
 
 def show_main_login(request):
     username = request.POST.get('username')
-    context = {"user":username}
+    context = {'name': request.user.username,}
     return render(request, "main_login.html", context)
 
 def register(request):
