@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from user_profile.models import Profile
 from django.contrib.auth.models import User
-from main.views import register
+from main.views import register_request
 
 # Create your views here.
 def view_profile(request):
