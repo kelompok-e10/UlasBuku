@@ -8,9 +8,11 @@ from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
 
 def view_profile(request,username):
+    user = get_object_or_404(User, username=username)
     user = get_object_or_404(User,username=username)  # Ambil berdasarkan username yang diberikan
 
     context = {
+        'user': user, 
         'user': user, 
     }
 
