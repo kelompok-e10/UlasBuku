@@ -31,14 +31,14 @@ def user_messages_by_id(request, selected_user_id):
         text.sender = request.user
         text.recipient = selected_user
         text.save()
-        return redirect("send_messages:messages", selected_user_id)
+        return redirect("send_messages:user_messages_by_id", selected_user_id)
     
     users = User.objects.order_by("username")
     messages = Messages.objects.filter(Q(sender=request.user.id, recipient=selected_user_id) | Q(
                sender=selected_user_id, recipient=request.user.id)).order_by("timestamp")
     template = loader.get_template("pesan/messages.html")
     context = {
-        'users': users,
+        'list_of_user': users,
         'selected_user_id': selected_user_id,
         'selected_user': selected_user,
         'messages': messages,

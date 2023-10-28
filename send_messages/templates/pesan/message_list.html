@@ -27,7 +27,7 @@
   <nav class="bg-body-tertiary">
     <form method="post" class="p-2 d-flex">
       {% csrf_token %}
-      {% bootstrap_form formset show_label=False wrapper_class="textarea-resize flex-grow-1" %}
+      {% bootstrap_form form show_label=False wrapper_class="textarea-resize flex-grow-1" %}
       {% bootstrap_button "Send" button_type="submit" button_class="btn-primary ms-2" %}
     </form>
   </nav>
