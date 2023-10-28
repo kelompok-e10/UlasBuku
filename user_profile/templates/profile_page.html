@@ -1,4 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
+{% load static %} {% block meta %}
+    <title>ProfilePage</title>
+    <link rel="stylesheet" href="{% static 'main/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'user_profile/user_profile.css' %}" />
+
+{% endblock meta %}
 
 {% block content %}
 
@@ -6,6 +12,7 @@
 <nav class="navbar">
     <!-- Navbar logo -->
     <a href="#" class="navbar-logo"> Ulas<span>Buku</span></a>
+
 
     <!-- Middle Part -->
     <div class="navbar-middle">

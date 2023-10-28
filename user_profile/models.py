@@ -7,7 +7,6 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
     
-
 def create_profile(sender,instance,created, **kwargs):
     if created:
         user_profile = Profile(user=instance)
