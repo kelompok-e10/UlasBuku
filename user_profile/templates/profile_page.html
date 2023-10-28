@@ -25,85 +25,12 @@
 <!-- User Profile Card -->
 <div class="card">
     <h2>{{ user }}</h2>
-    
-    <!-- Menampilkan deskripsi jika ada -->
-    {% if user.profile.description %}
-        <p>{{ user.profile.description }}</p>
-    {% endif %}
-    
     <!-- Tombol untuk membuka modal edit profil -->
-    {% if user.is_authenticated %}
-        <a href="#addDescription" class="btn btn-primary" id="addDescriptionBtn">Add Description</a>
-        
-        <!-- Form untuk menambahkan deskripsi -->
-        <form id="addDescriptionForm" style="display: none;">
-            {% csrf_token %}
-            <textarea id="description" name="description" rows="3" cols="50" placeholder="Add your description"></textarea>
-            <button type="submit">Save Description</button>
-        </form>
-    {% else %}
-        <a href="#sendMessage" class="btn btn-secondary" id="sendMessageBtn">Send Message</a>
+    
+    {% if not user.is_authenticated %}
+        <a href="#sendMessage" class="btn btn-secondary"id="sendMessageBtn">Send Message</button>
     {% endif %}
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const addDescriptionBtn = document.getElementById('addDescriptionBtn');
-    const addDescriptionForm = document.getElementById('addDescriptionForm');
-    
-    addDescriptionBtn.addEventListener('click', function() {
-        addDescriptionForm.style.display = 'block';
-    });
-    
-    addDescriptionForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const description = document.getElementById('description').value;
-        
-        // Kirim permintaan AJAX untuk menyimpan deskripsi
-        fetch(`/user_profile/{{ user.username }}/add_description/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `description=${description}`,
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Deskripsi berhasil disimpan
-                addDescriptionForm.style.display = 'none';
-                // Tampilkan deskripsi yang baru disimpan
-                const descriptionElement = document.createElement('p');
-                descriptionElement.innerText = description;
-                document.querySelector('.card').appendChild(descriptionElement);
-            } else {
-                // Tampilkan pesan kesalahan jika diperlukan
-                console.error(data.error);
-            }
-        });
-    });
-    
-    // Fungsi untuk mendapatkan cookie CSRF
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Cari cookie dengan nama yang sesuai
-                if (cookie.substring(0, name.length + 1) === name + '=') {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-});
-</script>
-
 
 
 

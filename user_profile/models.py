@@ -8,9 +8,9 @@ class Profile(models.Model):
     description = models.TextField(blank=True, null=True)
     
 
-def create_profile(sender,instance,created, **kwargs):
-    if created:
-        user_profile = Profile(user=instance)
-        user_profile.save()
+#def create_profile(sender,instance,created, **kwargs):
+ #   if created:
+  #      user_profile = Profile(user=instance)
+   #     user_profile.save()
 
-post_save.connect(create_profile,sender=User)
+#post_save.connect(create_profile,sender=User)
