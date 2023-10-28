@@ -6,7 +6,7 @@ from main.views import register_request
 # Create your views here.
 
 def view_profile(request,username):
-    user = get_object_or_404(User)  # Ambil berdasarkan username yang diberikan
+    user = get_object_or_404(User, username=username)
     username = user.username
     context = {
         'user': username, 
