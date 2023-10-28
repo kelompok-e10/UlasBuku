@@ -7,9 +7,8 @@ from main.views import register_request
 
 def view_profile(request,username):
     user = get_object_or_404(User, username=username)
-    username = user.username
     context = {
-        'user': username, 
+        'user': user, 
     }
 
     return render(request, 'profile_page.html', context)
