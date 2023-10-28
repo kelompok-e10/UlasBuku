@@ -1,28 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>ProfilePage</title>
+{% extends 'base.html' %}
 
-    <!-- style -->
-    <link rel="stylesheet" href="main/static/main/main.css">
-    <style>
-        /* CSS untuk card profil */
-        .user-profile-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            margin: 20px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f7f7f7;
-        }
-    </style>
-</head>
-<body>
+{% block content %}
 
 <!-- Navbar start -->
 <nav class="navbar">
@@ -38,17 +16,22 @@
 
     <!-- Right Part -->
     <div class="navbar-right">
-        <p>Hi {{name}}</p>
+        <p>Welcome, {{user}}</p>
     </div>
     
 
 </nav>
 
 <!-- User Profile Card -->
-<div class="user-profile-card">
+<div class="card">
     <h2>{{ user }}</h2>
-    <!-- <p>{{ description }}</p> -->
+    <!-- Tombol untuk membuka modal edit profil -->
+    
+    {% if not user.is_authenticated %}
+        <a href="#sendMessage" class="btn btn-secondary"id="sendMessageBtn">Send Message</button>
+    {% endif %}
 </div>
 
-</body>
-</html>
+
+
+{% endblock content %}
