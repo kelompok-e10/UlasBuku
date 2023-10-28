@@ -1,0 +1,34 @@
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+
+<div id="message-list" class="flex-grow-1 h-100 d-flex flex-column">
+  <nav class="navbar bg-primary-subtle">
+    <div class="container-fluid">
+      <div class="navbar-brand d-flex align-items-center">
+        {% bs_icon 'chat-dots' size='24px' %}
+        <span class="px-3">{{ selected_user.username }}</span>
+      </div>
+    </div>
+  </nav>
+  <div class="flex-grow-1 d-flex flex-column py-3" style="gap: 16px; overflow-y: scroll;">
+    {% for msg in messages %}
+    <div class="d-flex px-2{% if msg.sender.id == user.id %} justify-content-end{% endif %}">
+      <div
+        class="card w-75 flex-shrink-0{% if msg.sender.id == user.id %} text-bg-info{% else %} text-bg-light{% endif %}">
+        <div class="card-header"><small>{{ msg.sender.username }}</small></div>
+        <div class="card-body">
+          {{ msg.text }}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <nav class="bg-body-tertiary">
+    <form method="post" class="p-2 d-flex">
+      {% csrf_token %}
+      {% bootstrap_form formset show_label=False wrapper_class="textarea-resize flex-grow-1" %}
+      {% bootstrap_button "Send" button_type="submit" button_class="btn-primary ms-2" %}
+    </form>
+  </nav>
+</div>
