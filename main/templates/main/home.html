@@ -24,7 +24,7 @@
       <!-- Right Part -->
       {% if user.is_authenticated %}
       <div class="navbar-right">
-        <p>Welcome, {{ user.username }}</p>
+        Welcome, <a href="{% url 'user_profile:view_profile' username=user.username %}">{{ user.username }}</a>
         <a href="{% url 'main:logout' %}">Logout</a>
       </div>
       {% else %}
