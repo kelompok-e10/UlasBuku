@@ -15,16 +15,19 @@
 
       <!-- Middle Part -->
       <div class="navbar-middle">
-        <a href="#about">About</a>
+        <a href="#about">Tentang</a>
         <a href="#forum">Forum</a>
-        <a href="#Reviews">Reviews</a>
-        <a href="{% url 'send_messages:show_messages' %}">Messages</a>
+        <a href="{% url 'book:show_main_add_book' %}">Tambah Buku</a>
+        <a href="{% url 'send_messages:show_messages' %}">Pesan</a>
       </div>
 
       <!-- Right Part -->
       {% if user.is_authenticated %}
       <div class="navbar-right">
-        Welcome, <a href="{% url 'user_profile:view_profile' username=user.username %}">{{ user.username }}</a>
+        Welcome,
+        <a href="{% url 'user_profile:view_profile' username=user.username %}"
+          >{{ user.username }}</a
+        >
         <a href="{% url 'main:logout' %}">Logout</a>
       </div>
       {% else %}
