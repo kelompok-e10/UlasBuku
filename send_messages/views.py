@@ -1,55 +1,63 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from send_messages.models import Messages
 from send_messages.forms import MessagesForm
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
+from django.urls import reverse
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.db.models import Q
+from django.template import loader
 
+@login_required
 def show_messages(request):
-    user = User.objects.filter(user=request.user)
-    messages = Messages.objects.all()
-    users = User.objects.all()
+    users = User.objects.order_by("username")
+    template = loader.get_template("pesan/index.html")
 
     context = {
-        'user': user.username,
+        'user': request.user,
+        'username': request.user.username,
         'list_of_user': users,
-        'list_of_messages': messages
     }
 
-    return render(request, "messages.html", context)
+    return HttpResponse(template.render(context, request))
 
-def get_messages_by_id(request, user_id, contact_id):
-    sent_messages = Messages.objects.filter(sender__id=user_id, recipient__id=contact_id)
-    received_messages = Messages.objects.filter(sender__id=contact_id, recipient__id=user_id)
+def user_messages_by_id(request, selected_user_id):
+    selected_user = User.objects.get(id=selected_user_id)
+    form = MessagesForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        text = form.save(commit=False)
+        text.sender = request.user
+        text.recipient = selected_user
+        text.save()
+        return redirect("send_messages:messages", selected_user_id)
+    
+    users = User.objects.order_by("username")
+    messages = Messages.objects.filter(Q(sender=request.user.id, recipient=selected_user_id) | Q(
+               sender=selected_user_id, recipient=request.user.id)).order_by("timestamp")
+    template = loader.get_template("pesan/messages.html")
     context = {
-        'sent_messages': sent_messages,
-        'received_messages': received_messages
+        'users': users,
+        'selected_user_id': selected_user_id,
+        'selected_user': selected_user,
+        'messages': messages,
+        'form': form,
     }
-    return render(request, "message.html", context)
-
-
-def add_messages_by_ajax(request):
-    if request.method == "POST":
-        sender = request.POST.get("sender")
-        recipient = request.POST.get("recipient")
-        text = request.POST.get("text")
-        timestamp = request.POST.get("timestamp")
-        is_read = request.POST.get("is_read")
-        
-        new_messages = Messages(sender=sender, recipient=recipient, text=text, timestamp=timestamp, is_read=is_read)
-        new_messages.save()
-
-        return HttpResponse(b"CREATED", status=201)
-
-    return HttpResponseNotFound()
+    return HttpResponse(template.render(context, request))
 
 def create_text_messages(request):
     form = MessagesForm(request.POST or None)
 
     if form.is_valid() and request.method == "POST":
-        form.save()
-
+        text = form.save(commit=False)
+        text.user = request.user
+        text.save()
+        return HttpResponseRedirect(reverse('send_messages:show_messages')) 
+     
     context = {'form': form}
-    return render(request, "message.html", context)
+    return render(request, "messages.html", context)
 
-
-# Create your views here.
+@login_required
+def send(request, recipient_id):
+    sender_id = request.user.id
