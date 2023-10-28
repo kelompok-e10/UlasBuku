@@ -1,12 +1,14 @@
 from django.db import models
 
 # Create your models here.
-class Books(models.Model):
-    title = models.CharField(max_length=1000, null=True, blank=True)
-    author = models.CharField(max_length=1000, null=True, blank=True)
-    publisher = models.CharField(max_length=1000, null=True, blank=True)
-    year = models.IntegerField()
-    isbn = models.CharField(max_length=1000, null=True, blank=True)
-    image_url_s = models.URLField(max_length=1000, null=True, blank=True)
-    image_url_m = models.URLField(max_length=1000, null=True, blank=True)
-    image_url_l = models.URLField(max_length=1000, null=True, blank=True)
+class Book(models.Model):
+    isbn = models.CharField(null=True, blank=True, max_length=13)
+    book_title = models.CharField(null=True, blank=True, max_length=255)
+    book_author = models.CharField(null=True, blank=True,  max_length=255)
+    year_of_publication = models.IntegerField(null=True, blank=True)
+    publisher = models.CharField(null=True, blank=True, max_length=255)
+    image_url_s = models.URLField(null=True, blank=True)
+
+    class Meta:
+        db_table = "book_book"  # Ensure the correct table name
+    

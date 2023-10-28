@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
-    'send_messages',
     'book',
+    'send_messages',
     'user_profile',
+    'django_boostrap_icons',
+    'django_boostrap5'
 ]
 
 MIDDLEWARE = [
@@ -125,3 +127,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
