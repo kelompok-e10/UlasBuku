@@ -16,19 +16,19 @@ def view_profile(request,username):
 
     return render(request, 'profile_page.html', context)
 
-#def add_description(request, username):
- #   if request.method == 'POST':
-  #      description = request.POST.get('description', '')
+def add_description(request, username):
+    if request.method == 'POST':
+        description = request.POST.get('description', '')
 
-       # Simpan deskripsi ke profil pengguna
-#        user = get_object_or_404(User, username=username)
- #       user.profile.description = description
-  #      user.profile.save()
+        # Simpan deskripsi ke profil pengguna
+        user = get_object_or_404(User, username=username)
+        user.profile.description = description
+        user.profile.save()
 
         # Anda juga dapat memvalidasi data deskripsi di sini jika diperlukan
 
-   #     return JsonResponse({'success': True})
-    #else:
-     #   return JsonResponse({'success': False, 'error': 'Invalid request method'})
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
     

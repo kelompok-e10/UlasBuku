@@ -5,5 +5,5 @@ app_name = 'user_profile'
 
 urlpatterns = [
     path('<str:username>/', views.view_profile, name='view_profile'),
-    # path('<str:username>/add_description/', views.add_description, name='add_description'),
+    path('<str:username>/add_description/', views.add_description, name='add_description'),
 ]
