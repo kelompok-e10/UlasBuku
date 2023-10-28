@@ -1,0 +1,10 @@
+{% extends "pesan/base.html" %}
+
+{% block title %}Pesan | {{selected_user_id}} {% endblock %}
+
+{% block content %}
+<div class="d-flex h-100">
+  {% include "pesan/user_list.html" %}
+  {% include "pesan/message_list.html" %}
+</div>
+{% endblock %}

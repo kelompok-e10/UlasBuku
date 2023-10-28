@@ -38,10 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
-    'send_messages',
     'book',
+    'send_messages',
     'user_profile',
+<<<<<<< HEAD
     
+=======
+    'django_boostrap_icons',
+    'django_boostrap5'
+>>>>>>> 9fbc04355f8b4b5f0cc8795b0f08a1d9a34492f0
 ]
 
 MIDDLEWARE = [
@@ -59,7 +64,7 @@ ROOT_URLCONF = 'UlasBuku.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
