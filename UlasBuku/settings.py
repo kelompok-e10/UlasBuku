@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'book',
     'user_profile',
     'django_bootstrap_icons',
-    'django_bootstrap5',
+    'django_bootstrap5', 
 ]
 
 MIDDLEWARE = [

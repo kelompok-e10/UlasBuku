@@ -23,6 +23,7 @@ def show_messages(request):
 
     return HttpResponse(template.render(context, request))
 
+@login_required
 def user_messages_by_id(request, selected_user_id):
     selected_user = User.objects.get(id=selected_user_id)
     form = MessagesForm(request.POST or None)
@@ -31,32 +32,20 @@ def user_messages_by_id(request, selected_user_id):
         text.sender = request.user
         text.recipient = selected_user
         text.save()
-        return redirect("send_messages:messages", selected_user_id)
+        return redirect("send_messages:user_messages_by_id", selected_user_id)
     
     users = User.objects.order_by("username")
     messages = Messages.objects.filter(Q(sender=request.user.id, recipient=selected_user_id) | Q(
                sender=selected_user_id, recipient=request.user.id)).order_by("timestamp")
     template = loader.get_template("pesan/messages.html")
     context = {
-        'users': users,
+        'list_of_user': users,
         'selected_user_id': selected_user_id,
         'selected_user': selected_user,
         'messages': messages,
         'form': form,
     }
     return HttpResponse(template.render(context, request))
-
-def create_text_messages(request):
-    form = MessagesForm(request.POST or None)
-
-    if form.is_valid() and request.method == "POST":
-        text = form.save(commit=False)
-        text.user = request.user
-        text.save()
-        return HttpResponseRedirect(reverse('send_messages:show_messages')) 
-     
-    context = {'form': form}
-    return render(request, "messages.html", context)
 
 @login_required
 def send(request, recipient_id):
