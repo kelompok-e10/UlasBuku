@@ -12,6 +12,12 @@
    2. Jalankan perintah "pipenv sync"
    3. Jalankan perintah "pipenv shell". Jika pengguna sudah menjalankan perintah "pipenv shell", pengguna tidak perlu mengaktifkan virtual environment karena perintah itu sudah otomatis mengaktifkan virtual environment 
 
+## Pembagian Tugas
+   1. **Forum Buku**: Adrasa Cantya Salaka
+   2. **Tambah Buku**: Darrel Danadyaksa Poli
+   3. **Profile**: Dhemas Wicaksono Nugroho
+   4. **Pesan Sesama Pengguna**: Surya Raavi Adiputra
+
 ## Deskripsi Aplikasi
 Judul Aplikasi: **UlasBuku**
 
