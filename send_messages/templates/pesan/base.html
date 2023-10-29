@@ -15,13 +15,13 @@
   
     <!-- Middle Part -->
     <div class="navbar-middle">
-      <a href="#about">About</a>
+      <a href="#about">Tentang</a>
       <a href="#forum">Forum</a>
       <a href="{% url 'book:show_main_add_book' %}">Tambah Buku</a>
       {% if user.is_authenticated %}
         <span class="messages-label" style="color: #8794C0; font-size: 1.3rem; margin: 0 1rem;">Messages</span>
       {% else %}
-        <a href="{% url 'send_messages:show_messages' %}">Messages</a>
+        <a href="{% url 'send_messages:show_messages' %}">Pesan</a>
     {% endif %}
     </div>
   
