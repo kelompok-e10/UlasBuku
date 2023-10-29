@@ -6,6 +6,11 @@
 - Surya Raavi Adiputra (2206082404)
 - Dhemas Wicaksono Nugroho (2206030786)
 
+## Setup
+   Tahapan setup (Sebelum melakukan setup, pengguna jangan mengaktifkan virtual environment terlebih dahulu):
+   1. Jalankan perintah "pip install pipenv" di terminal pada direktori proyek yang sudah diclone sebelumnya.
+   2. Jalankan perintah "pipenv sync"
+   3. Jalankan perintah "pipenv shell". Jika pengguna sudah menjalankan perintah "pipenv shell", pengguna tidak perlu mengaktifkan virtual environment karena perintah itu sudah otomatis mengaktifkan virtual environment 
 
 ## Deskripsi Aplikasi
 Judul Aplikasi: **UlasBuku**
