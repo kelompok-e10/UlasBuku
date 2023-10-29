@@ -4,6 +4,7 @@ from django.core import serializers
 from django.urls import reverse
 from book.models import Book
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
 
 from django.http import JsonResponse
@@ -25,7 +26,7 @@ def get_header_json(request):
                 'book_info': book_info,
                 'review': header.review,
                 'rating': header.rating,
-                'date_added': header.date_added,
+                'date_added': header.date,
                 'user': header.user.username if header.user else "Anonymous",
             })
 
@@ -36,6 +37,7 @@ def delete_discussion(request, id):
     product.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
 
+@login_required
 @csrf_exempt
 def add_discussion_ajax(request):
     if request.method == 'POST':
@@ -44,12 +46,12 @@ def add_discussion_ajax(request):
         try:
             rating = float(rating)
         except (ValueError, TypeError, rating < 0 or rating > 5):
-            return HttpResponseBadRequest("Masukkan bilangan bulat positif kurang dari 5.")
+            return HttpResponseBadRequest("Masukkan bilangan positif kurang dari 5.")
         
         review = request.POST.get("review")
         user = request.user
 
-        new_header = Header(title=title, rating=rating, review=review, user=user)
+        new_header = Header(book_title=title, rating=rating, review=review, user=user)
         new_header.save()
 
         return HttpResponse(b"CREATED", status=201)

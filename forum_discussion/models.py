@@ -8,6 +8,7 @@ class Header(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     date = models.DateField(auto_now_add=True)
     book_title = models.CharField(max_length=255)
+    rating = models.IntegerField()
     review = models.TextField()
 
     def get_book_info(self):
@@ -17,7 +18,7 @@ class Header(models.Model):
                 'isbn': book_info.isbn,
                 'book_title': book_info.book_title,
                 'author': book_info.book_author,
-                'published_date': book_info.year_of_publication,
+                'published_year': book_info.year_of_publication,
                 'publisher': book_info.publisher,
                 'image_url_s': book_info.image_url_s,
             }

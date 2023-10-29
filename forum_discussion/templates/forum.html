@@ -145,7 +145,7 @@
 </nav>
 
     
-<div id="discussion_cards" class="row row-cols-1 row-cols-md-3 g-4 text-center"></div>
+<div id="discussion_cards" class="row g-4 text-center"></div>
     
     <!-- Ini untuk AJAX -->
     <div class="modal fade" id="addDiscussionModal" tabindex="-1" aria-labelledby="addDiscussionLabel" aria-hidden="true">
@@ -159,11 +159,11 @@
                     <form id="form" onsubmit="return false;" >
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="title" class="col-form-label">Title:</label>
-                            <input type="text" class="form-control" id="title" name="title"></input>
+                            <label for="book_title" class="col-form-label">Book title:</label>
+                            <input type="text" class="form-control" id="book_title" name="book_title"></input>
                         </div>
                         <div class="mb-3">
-                            <label for="rating" class="col-form-label">Rating (out of 5):</label>
+                            <label for="rating" class="col-form-label">Rating (dari 5):</label>
                             <input type="number" class="form-control" id="rating" name="rating" min="0" max="5"></input>
                         </div>
                         <div class="mb-3">
@@ -173,14 +173,14 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Discussion</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Tambahkan Diskusi</button>
                 </div>
             </div>
         </div>
     </div>
     
-    <button type="button" class="floating-btn" data-bs-toggle="modal" data-bs-target="#addDiscussionModal">Add Discussion</button>
+    <button type="button" class="floating-btn" data-bs-toggle="modal" data-bs-target="#addDiscussionModal">Tambahkan Diskusi</button>
 
     <script>
         async function getHeader() {
@@ -191,45 +191,49 @@
             const discussionCardsContainer = document.getElementById("discussion_cards");
 
             const header = await getHeader();
-            console.log("Data received from the database:", header);
-
+            
             header.forEach((item, index) => {
-                console.log("Book title:", item.fields.get_book_info().book_title);
-                console.log("Image URL:", item.fields.get_book_info().image_url_s);
-
+                console.log("Item:", item); // Add this line for debugging
+                console.log("Item fields:", item.date); // Add this line for debugging
                 const card = document.createElement("div");
                 card.classList.add("discussion_cards", "mb-4");
                 const cardContent = `
-                    <div class="card">
-                        <div class="card-header">
-                            <p>Added by: <b>${item.user}</b> on <b>${item.date_added}</b></p>
-                        </div>
-                        <div class="card-body">
-                            <div class=row>
-                                <div class="col-md-6">
-                                    <h4 class="card-title">${item.fields.get_book_info().book_title}</h4>
-                                    <img src="${item.fields.get_book_info().image_url_s}" alt="Book Image" class="img-fluid">
-                                    <p class="card-text">ISBN: ${item.fields.get_book_info().isbn}</p>
-                                    <p class="card-text">Written by: ${item.fields.get_book_info().author}</p>
-                                    <p class="card-text">Published by: ${item.fields.get_book_info().publisher}</p>
-                                    <p class="card-text">Published on: ${item.fields.get_book_info().published_date}</p>
+                <div class="card">
+                    <div class="card-header">
+                        <p>Added by <b>${item.user}</b> on <b>${item.date_added}</b></p>
+                    </div>
+                    <div class="card-body">
+                        <div class="card mb-3" style="max-width: 540px;">
+                          <div class="row g-0">
+                            <div class="col-md-4">
+                                <h4 class="card-title">${item.book_info.book_title}</h4>
+                                <img src="${item.book_info.image_url_s}" alt="Book Image" class="img-fluid">
+                                <p class="card-text">ISBN: ${item.book_info.isbn}</p>
+                                <p class="card-text">Written by: ${item.book_info.author}</p>
+                                <p class="card-text">Published by: ${item.book_info.publisher}</p>
+                                <p class="card-text">Published on: ${item.book_info.published_year}</p>
+                            </div>
+                            <div class="col-md-8">
+                              <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <p class="card-text">Rating:</p>
+                                    <p class="card-text">${item.rating} / 5</p>
                                 </div>
-                                <div class="col-md-6">
-                                    <p class="card-text">Rating: ${item.rating} out of 5</p>
-                                    <p class="card-text">Review: </p>
+                                <div class="d-flex justify-content-between">
+                                    <p class="card-text">Review:</p>
                                     <p class="card-text">${item.review}</p>
                                 </div>
+                                  <small class="text-muted">Last updated 3 mins ago</small>
+                              </div>
                             </div>
-                            <p></p>
+                          </div>
                         </div>
-                        <div class="card-actions">
-                            
-                        </div>
-                        <p></p>
-                        <div class="card-footer text-muted">
-                            <p> reply </p>
-                        </div>
+                      </div>
                     </div>
+                    <div class="card-footer text-muted">
+                        <p> reply </p>
+                    </div>
+                </div>
                 `;
                 card.innerHTML = cardContent;
                 discussionCardsContainer.appendChild(card);
