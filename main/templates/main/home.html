@@ -29,30 +29,288 @@
         color: #fff;
     }
 
-      <!-- Middle Part -->
-      <div class="navbar-middle">
-        <a href="#about">Tentang</a>
-        <a href="#forum">Forum</a>
-        {% if user.is_authenticated %}
-        <a href="{% url 'book:show_main_add_book' %}">Tambah Buku</a>
-        {% endif %}
-        <a href="{% url 'send_messages:show_messages' %}">Pesan</a>
-        {% if user.is_authenticated %}
-        <a href="{% url 'user_profile:view_profile' username=user.username %}">Profil</a>
-        {% endif %}
-      </div>
+    nav a {
+        text-decoration: none;
+        color: #fff;
+    }
 
-      <!-- Right Part -->
-      {% if user.is_authenticated %}
-      <div class="navbar-right">
-        Welcome, {{ user.username }}
-        <a href="{% url 'main:logout' %}">Logout</a>
-      </div>
-      {% else %}
-      <div class="navbar-right">
-        <a href="{% url 'main:login' %}">Login</a>
-      </div>
-      {% endif %}
-    </nav>
-  </body>
-</html>
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.4rem 7%;
+        color: #fff;
+    
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+    }
+    
+    .navbar .navbar-logo {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #fff;
+        font-style: italic;
+    }
+    
+    .navbar .navbar-logo span {
+        color: var(--primary);
+    }
+    
+    .navbar .navbar-middle a {
+        color: #fff;
+        display: inline-block;
+        font-size: 1.3rem;
+        margin: 0 2rem;
+    }
+    
+    .navbar .navbar-middle a:hover {
+        color: var(--primary);
+    }
+    
+    .navbar .navbar-middle a::after {
+        content: '';
+        display: block;
+        padding-bottom: 0.1rem;
+        border-bottom: 0.05rem solid var(--primary);
+        transform: scaleX(0);
+        transition: 0.2s linear;
+    }
+    
+    .navbar .navbar-middle a:hover::after {
+        transform: scaleX(0.5);
+    }
+    
+    .navbar .navbar-right a{
+        color: #fff;
+        display: inline-block;
+        font-size: 1.3rem;
+        margin: 0 1rem;
+    }
+    
+    .card {
+        height: 200px;
+        background-color: rgba(0, 0, 0, 0.4);
+        color: white;
+        font-size: 40px;
+        margin: 10px;
+        flex: 200px 0 0;
+      }
+      .cards img {
+          width: 100%;
+          object-fit: cover;
+      }
+      .cards-wrapper {
+        display: flex; 
+        transition: ease 0.5s;
+      }
+      .display-area {
+        width: 880px;
+      /*   border: 1px solid black; */
+        overflow-x: hidden;
+        margin: auto;
+      }
+      
+      .dots-wrapper {
+        display: flex;
+        justify-content: center;
+        margin: auto;
+      }
+      
+      .dot {
+        border: none;
+        background: rgba(0, 0, 0, 0.2);
+        width: 20px;
+        height: 20px;
+        margin: 5px;
+        border-radius: 50%;
+        outline: none;
+      }
+
+      .dot:hover {
+        background: rgba(0, 0, 0, 0.3);
+      }
+
+      .dot.active {
+        background: rgba(0, 0, 0, 0.5);
+      }
+
+      .card-body{
+        justify-content: flex-end;
+        display: flex;
+        flex-direction: column; 
+      }
+
+</style>
+
+{% endblock meta %}
+
+{% block content %}
+<body style="background-color: var(--bg);">
+  <!-- Navbar start -->
+  <nav class="navbar px-5" style="background-color: rgba(1, 1, 1, 0.8);">
+    <div class="container-fluid my-2">
+        <!-- Navbar logo -->
+        <div class="navbar-logo">
+            <a href="{% url 'main:homepage' %}">Ulas<span>Buku</span></a>
+        </div>
+        
+        <!-- Middle Part -->
+        <div class="navbar-middle">
+            <a href="{% url 'main:homepage' %}">Tentang</a>
+            <a href="{% url 'forum_discussion:view_forum' %}">Forum</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'book:show_main_add_book' %}">Tambah Buku</a>
+            {% endif %}
+            <a href="{% url 'send_messages:show_messages' %}">Pesan</a>
+        </div>
+
+        <!-- Right Part -->
+        {% if user.is_authenticated %}
+        <div class="navbar-right">
+            Welcome, {{ user.username }}
+            <a href="{% url 'main:logout' %}">Logout</a>
+        </div>
+        {% else %}
+        <div class="navbar-right">
+            <a href="{% url 'main:login' %}">Login</a>
+        </div>
+        {% endif %}
+    </div>
+  </nav>
+
+<div class="container mx-2 my-2" style="text-align: center">
+    <p></p>
+    <h5><b> Rekomendasi buku untuk kamu</b></h5>
+    <p> Temukan inspirasi bacamu segera! </p>
+</div>
+
+<div class="display-area">
+  <div class="cards-wrapper">
+    <!-- Group 1 -->
+    <div class="card"><img src="http://images.amazon.com/images/P/074322678X.01.LZZZZZZZ.jpg" alt="" >
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">Where You'll Find Me: And Other Stories</p>
+        </div>
+    </div>
+    <div class="card"><img src="http://images.amazon.com/images/P/0771074670.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">Nights Below Station Street</p>
+        </div>
+    </div>
+    <div class="card"><img src="http://images.amazon.com/images/P/0425182908.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">Isle of Dogs</p>
+        </div>
+    </div>
+    <div class="card"><img src="http://images.amazon.com/images/P/0804106304.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">The Joy Luck Club</p>
+        </div>
+    </div>
+
+    <!-- Group 2 -->
+    <div class="card"><img src="http://images.amazon.com/images/P/0689821166.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">Flood : Mississippi 1927</p>
+        </div>
+    </div>
+    <div class="card"><img src="http://images.amazon.com/images/P/0439095026.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">Tell Me This Isn't Happening</p>
+        </div>
+    </div>
+    <div class="card"><img src="http://images.amazon.com/images/P/0971880107.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">Wild Animus</p>
+        </div>
+    </div>
+    <div class="card"><img src="http://images.amazon.com/images/P/0887841740.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">The Middle Stories</p>
+        </div>
+    </div>
+
+    <!-- Group 3 -->
+    <div class="card"><img src="http://images.amazon.com/images/P/1552041778.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">Jane Doe</p>
+        </div>
+    </div>
+    <div class="card"><img src="http://images.amazon.com/images/P/0345417623.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">Timeline</p>
+        </div>
+    </div>
+    <div class="card"><img src="http://images.amazon.com/images/P/0375759778.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">Prague : A Novel</p>
+        </div>
+    </div>
+    <div class="card"><img src="http://images.amazon.com/images/P/0375406328.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">Lying Awake</p>
+        </div>
+    </div>
+
+    <!-- Group 4 -->
+    <div class="card"><img src="http://images.amazon.com/images/P/0446310786.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">To Kill A Mockingbird</p>
+        </div>
+    </div>
+    <div class="card"><img src="http://images.amazon.com/images/P/0440225701.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">The Street Lawyer</p>
+        </div>
+    </div>
+    <div class="card"><img src="http://images.amazon.com/images/P/0061099686.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">Downtown</p>
+        </div>
+    </div>
+    <div class="card"><img src="http://images.amazon.com/images/P/0553582909.01.LZZZZZZZ.jpg" alt="">
+        <div class="card-body" style="height: auto">
+            <p class="card-text" style="font-size: small; text-align: center">Icebound</p>
+        </div>
+    </div>
+  </div> 
+</div>
+
+<div class="dots-wrapper">
+  <button class="dot active"></button>
+  <button class="dot"></button>
+  <button class="dot"></button>
+  <button class="dot"></button>
+</div>
+<script>
+    const wrapper = document.querySelector('.cards-wrapper');
+
+    const dots = document.querySelectorAll('.dot');
+    let activeDotNum = 0;
+    
+    dots.forEach((dot, idx) => {  
+      dot.setAttribute('data-num', idx);
+      
+      dot.addEventListener('click', (e) => {
+        
+        let clickedDotNum = e.target.dataset.num;
+        if(clickedDotNum == activeDotNum) {
+          return;
+        }
+        else {
+          let displayArea = wrapper.parentElement.clientWidth;
+          let pixels = -displayArea * clickedDotNum
+          wrapper.style.transform = 'translateX('+ pixels + 'px)';
+          dots[activeDotNum].classList.remove('active');
+          dots[clickedDotNum].classList.add('active');
+          activeDotNum = clickedDotNum;
+        }
+        
+      });
+    });
+</script>
+
+{% endblock content %}
