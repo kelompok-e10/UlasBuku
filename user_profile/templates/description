@@ -1,0 +1,36 @@
+addDescriptionForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const description = document.getElementById('description').value;
+
+            // Kirim permintaan AJAX untuk menyimpan deskripsi
+            fetch(`/user_profile/{{ user.username }}/add_description/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `description=${description}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Deskripsi berhasil disimpan
+                    addDescriptionForm.style.display = 'none';
+                    // Periksa apakah elemen deskripsi pengguna sudah ada
+                    if (descriptionElement) {
+                        // Gantikan deskripsi yang ada dengan yang baru
+                        descriptionElement.innerText = description;
+                    } else {
+                        // Jika elemen deskripsi belum ada, tambahkan elemen baru
+                        const newDescriptionElement = document.createElement('p');
+                        newDescriptionElement.id = 'user-description'; // Set ID untuk elemen deskripsi
+                        newDescriptionElement.innerText = description;
+                        document.querySelector('.card').appendChild(newDescriptionElement);
+                    }
+                } else {
+                    // Tampilkan pesan kesalahan jika diperlukan
+                    console.error(data.error);
+                }
+            });
+        });

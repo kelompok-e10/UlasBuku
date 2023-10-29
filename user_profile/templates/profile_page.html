@@ -94,7 +94,7 @@
                   <p class="mb-0">First Name</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0" id ="user-firstname">{% if user.profile.first_name %}{{ user.profile.first_name }}{% else %}{{ "-" }}{% endif %}</p>
+                  <p class="text-muted mb-0" id ="first_name">{% if user.profile.first_name %}{{ user.profile.first_name }}{% endif %}</p>
                 </div>
               </div>
               <hr>
@@ -103,7 +103,7 @@
                   <p class="mb-0">Last Name</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"id="user-lastname">{% if user.profile.last_name %}{{ user.profile.last_name }}{% else %}{{ "-" }}{% endif %}</p>
+                  <p class="text-muted mb-0"id="last_name">{% if user.profile.last_name %}{{ user.profile.last_name }}{% endif %}</p>
                 </div>
               </div>
               <hr>
@@ -112,7 +112,7 @@
                   <p class="mb-0">Email</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"id="user-email">{% if user.profile.email %}{{ user.profile.email }}{% else %}{{ "-" }}{% endif %}</p>
+                  <p class="text-muted mb-0"id="email">{% if user.profile.email %}{{ user.profile.email }}{% endif %}</p>
                 </div>
               </div>
               <hr>
@@ -121,7 +121,7 @@
                   <p class="mb-0">Contact</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"id="user-contact">{% if user.profile.contact %}{{ user.profile.contact }}{% else %}{{ "-" }}{% endif %}</p>
+                  <p class="text-muted mb-0"id="contact">{% if user.profile.contact %}{{ user.profile.contact }}{% endif %}</p>
                 </div>
               </div>
             </div>
@@ -145,6 +145,7 @@
         const addDescriptionBtn = document.getElementById('addDescriptionBtn');
         const addDescriptionForm = document.getElementById('addDescriptionForm');
         const saveDescriptionBtn = document.getElementById('saveDescriptionBtn');
+        const cancelDescriptionBtn = document.getElementById('cancelDescriptionBtn')
 
         // Periksa apakah elemen deskripsi pengguna sudah ada
         const descriptionElement = document.querySelector('#user-description');
@@ -156,8 +157,7 @@
         cancelDescriptionBtn.addEventListener('click', function() {
             // Sembunyikan formulir tambahan
             addDescriptionForm.style.display = 'none';
-            // Kosongkan teks deskripsi
-            descriptionTextarea.value = '';
+            
         });
 
         addDescriptionForm.addEventListener('submit', function(e) {
@@ -213,78 +213,57 @@
             }
             return cookieValue;
         }
-    });
 
+    // JavaScript untuk meng-handle pengeditan profile
+      const editProfileBtn = document.getElementById('editProfileBtn');
+      const editProfileForm = document.getElementById('editProfileForm');
+      const saveEditProfileBtn = document.getElementById('saveEditProfileBtn');
+      const cancelEditProfileBtn = document.getElementById('cancelEditProfileBtn');
 
-    // JavaScript untuk meng-handle pengeditan profil
-    document.addEventListener('DOMContentLoaded', function() {
-        const editProfileBtn = document.getElementById('editProfileBtn');
-        const editProfileForm = document.getElementById('editProfileForm');
-        const saveEditProfileBtn = document.getElementById('saveEditProfileBtn');
-        const cancelEditProfileBtn = document.getElementById('cancelEditProfileBtn');
-        const firstNameInput = document.getElementById('first_name');
-        const lastNameInput = document.getElementById('last_name');
-        const emailInput = document.getElementById('email');
-        const contactInput = document.getElementById('contact');
+      editProfileBtn.addEventListener('click', function() {
+          editProfileForm.style.display = 'block';
+      });
 
-        editProfileBtn.addEventListener('click', function() {
-            editProfileForm.style.display = 'block';
-            // Set nilai awal untuk input contact
-            contactInput.value = "{{ user.profile.contact }}" || "";
-        });
+      cancelEditProfileBtn.addEventListener('click', function() {
+          // Sembunyikan formulir edit profil
+          editProfileForm.style.display = 'none';
+      });
 
-        cancelEditProfileBtn.addEventListener('click', function() {
-            editProfileForm.style.display = 'none';
-        });
+      editProfileForm.addEventListener('submit', function(e) {
+          e.preventDefault();
 
-        editProfileForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+          // Ambil nilai-nilai field edit profil
+          const first_name = document.getElementById('first_name').value;
+          const last_name = document.getElementById('last_name').value;
+          const email = document.getElementById('email').value;
+          const contact = document.getElementById('contact').value;
 
-            const firstName = firstNameInput.value;
-            const lastName = lastNameInput.value;
-            const email = emailInput.value;
-            const contact = contactInput.value;
-
-            // Kirim permintaan AJAX untuk menyimpan profil
-            fetch(`/user_profile/{{ user.username }}/edit_profile/`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken'),
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `first_name=${firstName}&last_name=${lastName}&email=${email}&contact=${contact}`,
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Profil berhasil disimpan
-                    editProfileForm.style.display = 'none';
-                    // Update data profil pengguna
-                    // Anda dapat memperbarui tampilan profil dengan data yang diperbarui di sini
-                } else {
-                    // Tampilkan pesan kesalahan jika diperlukan
-                    console.error(data.error);
-                }
-            });
-        });
-
-        // Fungsi untuk mendapatkan cookie CSRF
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Cari cookie dengan nama yang sesuai
-                    if (cookie.substring(0, name.length + 1) === name + '=') {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-    });
+          // Kirim permintaan AJAX untuk menyimpan perubahan profil
+          fetch(`/user_profile/{{ user.username }}/edit_profile/`, {
+              method: 'POST',
+              headers: {
+                  'X-CSRFToken': getCookie('csrftoken'),
+                  'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: `first_name=${first_name}&last_name=${last_name}&email=${email}&contact=${contact}`,
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  // Profil berhasil diperbarui
+                  editProfileForm.style.display = 'none';
+                  // Perbarui tampilan profil dengan nilai yang baru
+                  document.getElementById('first_name').textContent = first_name;
+                  document.getElementById('last_name').textContent = last_name;
+                  document.getElementById('email').textContent = email;
+                  document.getElementById('contact').textContent = contact;
+              } else {
+                  // Tampilkan pesan kesalahan jika diperlukan
+                  console.error(data.error);
+              }
+          });
+      });
+});
 
 </script>
 

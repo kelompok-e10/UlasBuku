@@ -31,51 +31,36 @@ def add_description(request, username):
     else:
         return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
-def get_description(request, username):
+def get_json(request, username):
     user = get_object_or_404(User, username=username)
     description = user.profile.description if user.profile.description else ""
-    return JsonResponse({'description': description})
+    profile_data = {
+        'first_name': user.profile.first_name,
+        'last_name': user.profile.last_name,
+        'email': user.email,
+        'contact': user.profile.contact,
+    }
+    return JsonResponse({'description': description,
+                         'profile_data':profile_data})
 
 @login_required
 def edit_profile(request, username):
-    user = get_object_or_404(User, username=username)
-
     if request.method == 'POST':
+        # Ambil nilai-nilai yang dikirim melalui POST
         first_name = request.POST.get('first_name', '')
         last_name = request.POST.get('last_name', '')
         email = request.POST.get('email', '')
         contact = request.POST.get('contact', '')
 
-        # Simpan data profil yang diperbarui
+        # Simpan perubahan ke profil pengguna
+        user = get_object_or_404(User, username=username)
         user.profile.first_name = first_name
         user.profile.last_name = last_name
         user.profile.email = email
         user.profile.contact = contact
-        user.save()
-
+        user.profile.save()
+        
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
-def get_profile(request, username):
-    user = get_object_or_404(User, username=username)
-    user_profile = user.profile  # Mendapatkan objek Profile yang sesuai dengan pengguna
-
-    # Sekarang, Anda bisa mengakses atribut-atribut profil seperti first_name, last_name, email, contact_phone, dll.
-    first_name = user_profile.first_name
-    last_name = user_profile.last_name
-    email = user_profile.email
-    contact = user.profile.contact
-    
-    # Kemudian Anda dapat mengembalikan data profil dalam format JSON atau sejenisnya.
-    profile_data = {
-        'first_name': first_name,
-        'last_name': last_name,
-        'email': email,
-        'contact': contact,
-    }
-
-    return JsonResponse(profile_data)
-
-
-    
