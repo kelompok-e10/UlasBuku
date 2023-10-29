@@ -29,7 +29,8 @@
 
     <!-- Right Part -->
     <div class="navbar-right">
-        <p>Welcome, {{user}}</p>
+        <p>Welcome, {{ request.user.username }}</p>
+        <a href="{% url 'main:logout' %}">Logout</a>
     </div>
     
 
@@ -48,10 +49,10 @@
         <div class="card mb-4">
           <div class="card-body text-center">
               <h2>{{ user }}</h2>
-              <!-- Menampilkan deskripsi jika ada -->
-              {% if user.profile.description %}
-                  <p id="user-description">{{ user.profile.description }}</p>
-              {% endif %}
+              <!-- Menampilkan deskripsi  -->
+              
+              <p id="user-description">{{ user.profile.description }}</p>
+              
               <!-- Tombol untuk membuka edit profile dan description -->
               {% if user == request.user %}
                   <button class="btn btn-primary" id="addDescriptionBtn">Edit Description</button>
@@ -135,7 +136,15 @@
         <div class="row">
             <div class="card mb-4 mb-md-0">
               <div class="card-body">
-                My Forum
+                <h4 class="card-title">My Forum</h4>
+                  <ul class="list-group" style="max-height: 300px; overflow-y: auto;">
+                      {% for forum in my_forums %}
+                          <li class="list-group-item">{{ forum.title }}</li>
+                      {% empty %}
+                          <li class="list-group-item">Anda belum membuat forum.</li>
+                      {% endfor %}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
