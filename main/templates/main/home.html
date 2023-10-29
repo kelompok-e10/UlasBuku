@@ -1,17 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>UlasBuku</title>
+{% extends "base.html" %}
 
-    <!-- style -->
-    <link rel="stylesheet" href="static/main/main.css" />
-  </head>
-  <body>
-    <!-- Navbar start -->
-    <nav class="navbar">
-      <!-- Navbar logo -->
-      <a href="/" class="navbar-logo"> Ulas<span>Buku</span></a>
+{% block meta %}
+  <title>UlasBuku</title>
+  <style>
+    :root {
+        --primary: #5a6794;
+        --bg: #8794c0;
+        --text: #eaf2d7;
+        --text1: #ffa69e;
+        --text2: #ff7e6b;
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        outline: none;
+        border: none;
+        text-decoration: none;
+    }
+    
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    body {
+        font-family: 'Poppins', sans-serif;
+        color: #fff;
+    }
 
       <!-- Middle Part -->
       <div class="navbar-middle">
