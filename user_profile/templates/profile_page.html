@@ -1,4 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
+{% load static %} {% block meta %}
+<title>ProfilePage</title>
+<link rel="stylesheet" href="{% static 'main/main.css' %}" />
+<link rel="stylesheet" href="{% static 'user_profile/user_profile.css' %}" />
+
+{% endblock meta %}
 
 {% block content %}
 
@@ -6,6 +12,7 @@
 <nav class="navbar">
     <!-- Navbar logo -->
     <a href="#" class="navbar-logo"> Ulas<span>Buku</span></a>
+
 
     <!-- Middle Part -->
     <div class="navbar-middle">
@@ -22,16 +29,263 @@
 
 </nav>
 
-<!-- User Profile Card -->
-<div class="card">
-    <h2>{{ user }}</h2>
-    <!-- Tombol untuk membuka modal edit profil -->
-    
-    {% if not user.is_authenticated %}
-        <a href="#sendMessage" class="btn btn-secondary"id="sendMessageBtn">Send Message</button>
-    {% endif %}
-</div>
+
+<div class="container py-5">
+    <div class="row">
+      <div class="col">
+        
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+              <h2>{{ user }}</h2>
+              <!-- Menampilkan deskripsi jika ada -->
+              {% if user.profile.description %}
+                  <p id="user-description">{{ user.profile.description }}</p>
+              {% endif %}
+              <!-- Tombol untuk membuka modal description -->
+              {% if user == request.user %}
+                  <button class="btn btn-primary" id="addDescriptionBtn">Edit Description</button>
+                  <button class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
+                  <form id="addDescriptionForm" class="description-form" style="display: none;">
+                      {% csrf_token %}
+                      <div class="form-group">
+                          <label for="description">Description:</label>
+                          <textarea class="form-control" id="description" name="description" rows="4" placeholder="Write about yourself"></textarea>
+                      </div>
+                      <button type="button" class="btn btn-secondary" id="cancelDescriptionBtn">Cancel</button>
+                      <button type="submit" class="btn btn-primary" id="saveDescriptionBtn">Save Description</button>
+                  </form>
+                  <form id="editProfileForm" class="profile-form" style="display: none;">
+                      {% csrf_token %}
+                      <div class="form-group">
+                          <label for="first_name">First Name:</label>
+                          <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}">
+                      </div>
+                      <div class="form-group">
+                          <label for="last_name">Last Name:</label>
+                          <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}">
+                      </div>
+                      <div class="form-group">
+                          <label for="email">Email:</label>
+                          <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                      </div>
+                      <div class="form-group">
+                          <label for="contact">Contact:</label>
+                          <input type="text" class="form-control" id="contact" name="contact" value="{{ user.profile.contact }}">
+                      </div>
+                      <button type="button" class="btn btn-secondary" id="cancelEditProfileBtn">Cancel</button>
+                      <button type="submit" class="btn btn-primary" id="saveEditProfileBtn">Save Profile</button>
+                  </form>
+              {% else %}
+                  <a href="#sendMessage" class="btn btn-secondary" id="sendMessageBtn">Send Message</a>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">First Name</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0" id ="user-firstname">{% if user.profile.first_name %}{{ user.profile.first_name }}{% else %}{{ "-" }}{% endif %}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Last Name</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"id="user-lastname">{% if user.profile.last_name %}{{ user.profile.last_name }}{% else %}{{ "-" }}{% endif %}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Email</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"id="user-email">{% if user.profile.email %}{{ user.profile.email }}{% else %}{{ "-" }}{% endif %}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Contact</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"id="user-contact">{% if user.profile.contact %}{{ user.profile.contact }}{% else %}{{ "-" }}{% endif %}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+            <div class="card mb-4 mb-md-0">
+              <div class="card-body">
+                My Forum
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addDescriptionBtn = document.getElementById('addDescriptionBtn');
+        const addDescriptionForm = document.getElementById('addDescriptionForm');
+        const saveDescriptionBtn = document.getElementById('saveDescriptionBtn');
+
+        // Periksa apakah elemen deskripsi pengguna sudah ada
+        const descriptionElement = document.querySelector('#user-description');
+
+        addDescriptionBtn.addEventListener('click', function() {
+            addDescriptionForm.style.display = 'block';
+        });
+
+        cancelDescriptionBtn.addEventListener('click', function() {
+            // Sembunyikan formulir tambahan
+            addDescriptionForm.style.display = 'none';
+            // Kosongkan teks deskripsi
+            descriptionTextarea.value = '';
+        });
+
+        addDescriptionForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const description = document.getElementById('description').value;
+
+            // Kirim permintaan AJAX untuk menyimpan deskripsi
+            fetch(`/user_profile/{{ user.username }}/add_description/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `description=${description}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Deskripsi berhasil disimpan
+                    addDescriptionForm.style.display = 'none';
+                    // Periksa apakah elemen deskripsi pengguna sudah ada
+                    if (descriptionElement) {
+                        // Gantikan deskripsi yang ada dengan yang baru
+                        descriptionElement.innerText = description;
+                    } else {
+                        // Jika elemen deskripsi belum ada, tambahkan elemen baru
+                        const newDescriptionElement = document.createElement('p');
+                        newDescriptionElement.id = 'user-description'; // Set ID untuk elemen deskripsi
+                        newDescriptionElement.innerText = description;
+                        document.querySelector('.card').appendChild(newDescriptionElement);
+                    }
+                } else {
+                    // Tampilkan pesan kesalahan jika diperlukan
+                    console.error(data.error);
+                }
+            });
+        });
+
+        // Fungsi untuk mendapatkan cookie CSRF
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Cari cookie dengan nama yang sesuai
+                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
 
 
+    // JavaScript untuk meng-handle pengeditan profil
+    document.addEventListener('DOMContentLoaded', function() {
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const editProfileForm = document.getElementById('editProfileForm');
+        const saveEditProfileBtn = document.getElementById('saveEditProfileBtn');
+        const cancelEditProfileBtn = document.getElementById('cancelEditProfileBtn');
+        const firstNameInput = document.getElementById('first_name');
+        const lastNameInput = document.getElementById('last_name');
+        const emailInput = document.getElementById('email');
+        const contactInput = document.getElementById('contact');
+
+        editProfileBtn.addEventListener('click', function() {
+            editProfileForm.style.display = 'block';
+            // Set nilai awal untuk input contact
+            contactInput.value = "{{ user.profile.contact }}" || "";
+        });
+
+        cancelEditProfileBtn.addEventListener('click', function() {
+            editProfileForm.style.display = 'none';
+        });
+
+        editProfileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const firstName = firstNameInput.value;
+            const lastName = lastNameInput.value;
+            const email = emailInput.value;
+            const contact = contactInput.value;
+
+            // Kirim permintaan AJAX untuk menyimpan profil
+            fetch(`/user_profile/{{ user.username }}/edit_profile/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `first_name=${firstName}&last_name=${lastName}&email=${email}&contact=${contact}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Profil berhasil disimpan
+                    editProfileForm.style.display = 'none';
+                    // Update data profil pengguna
+                    // Anda dapat memperbarui tampilan profil dengan data yang diperbarui di sini
+                } else {
+                    // Tampilkan pesan kesalahan jika diperlukan
+                    console.error(data.error);
+                }
+            });
+        });
+
+        // Fungsi untuk mendapatkan cookie CSRF
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Cari cookie dengan nama yang sesuai
+                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+
+</script>
 
 {% endblock content %}

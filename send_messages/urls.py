@@ -5,5 +5,5 @@ app_name = 'send_messages'
 
 urlpatterns = [
     path('', show_messages, name='show_messages'),
-    path('user_messages_by_id/<int:contact_id>/', user_messages_by_id, name='user_messages_by_id'),
+    path('user_messages_by_id/<int:selected_user_id>/', user_messages_by_id, name='user_messages_by_id'),
 ]
