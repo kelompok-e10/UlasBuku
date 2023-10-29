@@ -1,0 +1,139 @@
+{% extends 'base.html' %} {% load static %} {% block meta %}
+<title>Tambah Buku</title>
+<link rel="stylesheet" href="{% static 'main/main.css' %}" />
+{% endblock meta %} {% block content %}
+<!-- Navbar start -->
+<nav class="navbar">
+  <!-- Navbar logo -->
+  <a href="/" class="navbar-logo"> Ulas<span>Buku</span></a>
+
+  <!-- Middle Part -->
+  <div class="navbar-middle">
+    <a href="#about">About</a>
+    <a href="#forum">Forum</a>
+    <a href="#{% url 'book:show_main_add_book' %}">Tambah Buku</a>
+    <a href="#SendMessage">Messages</a>
+  </div>
+
+  <!-- Right Part -->
+  <!-- <div class="navbar-right">
+    <a href="#Login">Login</a>
+  </div> -->
+  {% if user.is_authenticated %}
+  <div class="navbar-right">
+    Welcome,
+    <a href="{% url 'user_profile:view_profile' username=user.username %}"
+      >{{ user.username }}</a
+    >
+    <a href="{% url 'main:logout' %}">Logout</a>
+  </div>
+  {% else %}
+  <div class="navbar-right">
+    <a href="{% url 'main:login' %}">Login</a>
+  </div>
+  {% endif %}
+</nav>
+<!-- Navbar end -->
+
+<!-- cards -->
+<div id="book_cards"></div>
+
+<!-- modal for book -->
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Book</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="isbn" class="col-form-label">isbn:</label>
+                        <input type="text" class="form-control" id="isbn" name="isbn"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="col-form-label">Amount:</label>
+                        <input type="number" class="form-control" id="amount" name="amount"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div> -->
+<!-- <div class="mb-3">
+                        <label for="isbn" class="col-form-label">isbn:</label>
+                        <input type="text" class="form-control" id="isbn" name="isbn"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="book_title" class="col-form-label">Book Title:</label>
+                        <input type="text" class="form-control" id="book_title" name="book_title"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="book_author" class="col-form-label">Book Author:</label>
+                        <input type="text" class="form-control" id="book_author" name="book_author"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="year_of_publication" class="col-form-label">Year of Publicatiion:</label>
+                        <input type="number" class="form-control" id="year_of_publication" name="year_of_publication"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="publisher" class="col-form-label">Publisher:</label>
+                        <input type="text" class="form-control" id="publisher" name="publisher"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image_url_s" class="col-form-label">image_url_s:</label>
+                        <input type="text" class="form-control" id="image_url_s" name="image_url_s"></input>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Book</button>
+            </div>
+        </div>
+    </div>
+</div>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add New Book</button> -->
+
+<script>
+  async function getBook() {
+    return fetch("{% url 'book:get_books' %}").then((res) => res.json());
+  }
+  async function refreshBook() {
+    console.log("masuk refresh book");
+    document.getElementById("book_cards").innerHTML = "";
+    const book = await getBook();
+    let htmlString = "";
+    book.forEach((item) => {
+      htmlString += `
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Book Name: ${item.fields.book_title}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Author: ${item.fields.book_author}</h6>
+                    <p class="card-text">Year of Publicatiion: ${item.fields.year_of_publication}</p>
+                    <p class="card-text">Publisher: ${item.fields.publisher}</p>
+                    <p class="card-text">ISBN: ${item.fields.isbn}</p>
+                </div>
+            </div>
+        `;
+    });
+    document.getElementById("book_cards").innerHTML = htmlString;
+  }
+  window.onload = function () {
+    refreshBook();
+  };
+
+  async function addBook() {
+    console.log("masuk add book");
+    await fetch("{% url 'book:add_book_ajax' %}", {
+      method: "POST",
+      body: new FormData(document.querySelector("#form")),
+    }).then(refreshBook);
+    document.getElementById("form").reset();
+    return false;
+  }
+
+  document.getElementById("button_add").onclick = addBook;
+</script>
+{% endblock content %}

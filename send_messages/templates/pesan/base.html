@@ -1,26 +1,48 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 
 <head>
   <meta charset="utf-8">
   <title>{% block title %}Pesan{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/messages_style.css' %}" />
   {% load django_bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
-
-  <style>
-    #user-list {
-      width: 360px;
-    }
-
-    #message-list {}
-
-    .textarea-resize textarea {
-      display: block;
-      width: 100%;
-      resize: both;
-    }
-  </style>
+  <nav class="navbar">
+    <!-- Navbar logo -->
+    <a href="/" class="navbar-logo"> Ulas<span>Buku</span></a>
+  
+    <!-- Middle Part -->
+    <div class="navbar-middle">
+      <a href="#about">Tentang</a>
+      <a href="#forum">Forum</a>
+      <a href="{% url 'book:show_main_add_book' %}">Tambah Buku</a>
+      {% if user.is_authenticated %}
+        <span class="messages-label">Pesan</span>
+      {% else %}
+        <a href="{% url 'send_messages:show_messages' %}">Pesan</a>
+    {% endif %}
+    </div>
+  
+    <!-- Right Part -->
+    <!-- <div class="navbar-right">
+      <a href="#Login">Login</a>
+    </div> -->
+    {% if user.is_authenticated %}
+    <div class="navbar-right">
+      Welcome,
+      <a href="{% url 'user_profile:view_profile' username=user.username %}"
+        >{{ user.username }}</a
+      >
+      <a href="{% url 'main:logout' %}">Logout</a>
+    </div>
+    {% else %}
+    <div class="navbar-right">
+      <a href="{% url 'main:login' %}">Login</a>
+    </div>
+    {% endif %}
+  </nav>
 </head>
 
 <body>

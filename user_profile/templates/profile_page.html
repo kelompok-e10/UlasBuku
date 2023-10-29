@@ -1,33 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>ProfilePage</title>
+{% extends 'base.html' %} 
+{% load static %} {% block meta %}
+<title>ProfilePage</title>
+<link rel="stylesheet" href="{% static 'main/main.css' %}" />
+<link rel="stylesheet" href="{% static 'user_profile/user_profile.css' %}" />
 
-    <!-- style -->
-    <link rel="stylesheet" href="main/static/main/main.css">
-    <style>
-        /* CSS untuk card profil */
-        .user-profile-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            margin: 20px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f7f7f7;
-        }
-    </style>
-</head>
-<body>
+{% endblock meta %}
+
+{% block content %}
 
 <!-- Navbar start -->
 <nav class="navbar">
     <!-- Navbar logo -->
     <a href="#" class="navbar-logo"> Ulas<span>Buku</span></a>
+
 
     <!-- Middle Part -->
     <div class="navbar-middle">
@@ -38,17 +23,248 @@
 
     <!-- Right Part -->
     <div class="navbar-right">
-        <p>Hi {{name}}</p>
+        <p>Welcome, {{user}}</p>
     </div>
     
 
 </nav>
 
-<!-- User Profile Card -->
-<div class="user-profile-card">
-    <h2>{{ user }}</h2>
-    <!-- <p>{{ description }}</p> -->
-</div>
 
-</body>
-</html>
+<div class="container py-5">
+    <div class="row">
+      <div class="col">
+        
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+              <h2>{{ user }}</h2>
+              <!-- Menampilkan deskripsi jika ada -->
+              {% if user.profile.description %}
+                  <p id="user-description">{{ user.profile.description }}</p>
+              {% endif %}
+              <!-- Tombol untuk membuka modal description -->
+              {% if user == request.user %}
+                  <button class="btn btn-primary" id="addDescriptionBtn">Edit Description</button>
+                  <button class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
+                  <form id="addDescriptionForm" class="description-form" style="display: none;">
+                      {% csrf_token %}
+                      <div class="form-group">
+                          <label for="description">Description:</label>
+                          <textarea class="form-control" id="description" name="description" rows="4" placeholder="Write about yourself"></textarea>
+                      </div>
+                      <button type="button" class="btn btn-secondary" id="cancelDescriptionBtn">Cancel</button>
+                      <button type="submit" class="btn btn-primary" id="saveDescriptionBtn">Save Description</button>
+                  </form>
+                  <form id="editProfileForm" class="profile-form" style="display: none;">
+                      {% csrf_token %}
+                      <div class="form-group">
+                          <label for="first_name">First Name:</label>
+                          <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}">
+                      </div>
+                      <div class="form-group">
+                          <label for="last_name">Last Name:</label>
+                          <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}">
+                      </div>
+                      <div class="form-group">
+                          <label for="email">Email:</label>
+                          <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                      </div>
+                      <div class="form-group">
+                          <label for="contact">Contact:</label>
+                          <input type="text" class="form-control" id="contact" name="contact" value="{{ user.profile.contact }}">
+                      </div>
+                      <button type="button" class="btn btn-secondary" id="cancelEditProfileBtn">Cancel</button>
+                      <button type="submit" class="btn btn-primary" id="saveEditProfileBtn">Save Profile</button>
+                  </form>
+              {% else %}
+                  <a href="#sendMessage" class="btn btn-secondary" id="sendMessageBtn">Send Message</a>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">First Name</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0" id ="first_name">{% if user.profile.first_name %}{{ user.profile.first_name }}{% endif %}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Last Name</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"id="last_name">{% if user.profile.last_name %}{{ user.profile.last_name }}{% endif %}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Email</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"id="email">{% if user.profile.email %}{{ user.profile.email }}{% endif %}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Contact</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"id="contact">{% if user.profile.contact %}{{ user.profile.contact }}{% endif %}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+            <div class="card mb-4 mb-md-0">
+              <div class="card-body">
+                My Forum
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addDescriptionBtn = document.getElementById('addDescriptionBtn');
+        const addDescriptionForm = document.getElementById('addDescriptionForm');
+        const saveDescriptionBtn = document.getElementById('saveDescriptionBtn');
+        const cancelDescriptionBtn = document.getElementById('cancelDescriptionBtn')
+
+        // Periksa apakah elemen deskripsi pengguna sudah ada
+        const descriptionElement = document.querySelector('#user-description');
+
+        addDescriptionBtn.addEventListener('click', function() {
+            addDescriptionForm.style.display = 'block';
+        });
+
+        cancelDescriptionBtn.addEventListener('click', function() {
+            // Sembunyikan formulir tambahan
+            addDescriptionForm.style.display = 'none';
+            
+        });
+
+        addDescriptionForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const description = document.getElementById('description').value;
+
+            // Kirim permintaan AJAX untuk menyimpan deskripsi
+            fetch(`/user_profile/{{ user.username }}/add_description/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `description=${description}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Deskripsi berhasil disimpan
+                    addDescriptionForm.style.display = 'none';
+                    // Periksa apakah elemen deskripsi pengguna sudah ada
+                    if (descriptionElement) {
+                        // Gantikan deskripsi yang ada dengan yang baru
+                        descriptionElement.innerText = description;
+                    } else {
+                        // Jika elemen deskripsi belum ada, tambahkan elemen baru
+                        const newDescriptionElement = document.createElement('p');
+                        newDescriptionElement.id = 'user-description'; // Set ID untuk elemen deskripsi
+                        newDescriptionElement.innerText = description;
+                        document.querySelector('.card').appendChild(newDescriptionElement);
+                    }
+                } else {
+                    // Tampilkan pesan kesalahan jika diperlukan
+                    console.error(data.error);
+                }
+            });
+        });
+
+        // Fungsi untuk mendapatkan cookie CSRF
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Cari cookie dengan nama yang sesuai
+                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+    // JavaScript untuk meng-handle pengeditan profile
+      const editProfileBtn = document.getElementById('editProfileBtn');
+      const editProfileForm = document.getElementById('editProfileForm');
+      const saveEditProfileBtn = document.getElementById('saveEditProfileBtn');
+      const cancelEditProfileBtn = document.getElementById('cancelEditProfileBtn');
+
+      editProfileBtn.addEventListener('click', function() {
+          editProfileForm.style.display = 'block';
+      });
+
+      cancelEditProfileBtn.addEventListener('click', function() {
+          // Sembunyikan formulir edit profil
+          editProfileForm.style.display = 'none';
+      });
+
+      editProfileForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+
+          // Ambil nilai-nilai field edit profil
+          const first_name = document.getElementById('first_name').value;
+          const last_name = document.getElementById('last_name').value;
+          const email = document.getElementById('email').value;
+          const contact = document.getElementById('contact').value;
+
+          // Kirim permintaan AJAX untuk menyimpan perubahan profil
+          fetch(`/user_profile/{{ user.username }}/edit_profile/`, {
+              method: 'POST',
+              headers: {
+                  'X-CSRFToken': getCookie('csrftoken'),
+                  'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: `first_name=${first_name}&last_name=${last_name}&email=${email}&contact=${contact}`,
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  // Profil berhasil diperbarui
+                  editProfileForm.style.display = 'none';
+                  // Perbarui tampilan profil dengan nilai yang baru
+                  document.getElementById('first_name').textContent = first_name;
+                  document.getElementById('last_name').textContent = last_name;
+                  document.getElementById('email').textContent = email;
+                  document.getElementById('contact').textContent = contact;
+              } else {
+                  // Tampilkan pesan kesalahan jika diperlukan
+                  console.error(data.error);
+              }
+          });
+      });
+});
+
+</script>
+
+{% endblock content %}
