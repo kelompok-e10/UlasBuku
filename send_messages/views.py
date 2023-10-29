@@ -9,8 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.db.models import Q
 from django.template import loader
+from main import*
 
-@login_required
+@login_required(login_url="main:login")
 def show_messages(request):
     users = User.objects.order_by("username")
     template = loader.get_template("pesan/index.html")
@@ -23,6 +24,7 @@ def show_messages(request):
 
     return HttpResponse(template.render(context, request))
 
+login_required(login_url="main:login")
 def user_messages_by_id(request, selected_user_id):
     selected_user = User.objects.get(id=selected_user_id)
     form = MessagesForm(request.POST or None)
@@ -46,18 +48,6 @@ def user_messages_by_id(request, selected_user_id):
     }
     return HttpResponse(template.render(context, request))
 
-def create_text_messages(request):
-    form = MessagesForm(request.POST or None)
-
-    if form.is_valid() and request.method == "POST":
-        text = form.save(commit=False)
-        text.user = request.user
-        text.save()
-        return HttpResponseRedirect(reverse('send_messages:show_messages')) 
-     
-    context = {'form': form}
-    return render(request, "messages.html", context)
-
-@login_required
+@login_required(login_url="main:login")
 def send(request, recipient_id):
     sender_id = request.user.id
