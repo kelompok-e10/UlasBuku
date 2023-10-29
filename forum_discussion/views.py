@@ -35,7 +35,7 @@ def get_header_json(request):
 def delete_discussion(request, id):
     product = Header.objects.get(pk = id)
     product.delete()
-    return HttpResponseRedirect(reverse('main:show_main'))
+    return HttpResponseRedirect(reverse('forum_discussion:view_forum'))
 
 @login_required
 @csrf_exempt

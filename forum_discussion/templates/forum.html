@@ -90,19 +90,24 @@
             font-size: 1.3rem;
             margin: 0 1rem;
         }
+        
+        .card-text {
+            font-size: small;
+            margin-bottom: 0;
+        }
 
         .floating-btn {
             width: fit-content;
             height: fit-content;
             padding: 5px 5px 5px 5px;
-            background-color: var(--text);
+            background-color: var(--primary);
             display: flex;
             justify-content: center;
             text-decoration: none;  
             border-radius: 8px;
-            color: black;
+            color: white;
             font-size: 20px;    
-            box-shadow: 2px 2px 2px var(--primary);
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
             position: fixed;
             right: 20px;
             bottom: 20px;
@@ -126,11 +131,13 @@
         <div class="navbar-middle">
             <a href="{% url 'main:homepage' %}">Tentang</a>
             <a href="{% url 'forum_discussion:view_forum' %}">Forum</a>
+            {% if user.is_authenticated %}
             <a href="{% url 'book:show_main_add_book' %}">Tambah Buku</a>
+            {% endif %}
             <a href="{% url 'send_messages:show_messages' %}">Pesan</a>
             <a href="{% url 'user_profile:view_profile' username=user.username %}">Profil</a>
         </div>
-        
+
         <!-- Right Part -->
         {% if user.is_authenticated %}
         <div class="navbar-right">
@@ -143,10 +150,9 @@
         </div>
         {% endif %}
     </div>
-</nav>
-
+  </nav>
     
-<div id="discussion_cards" class="row g-4 text-center"></div>
+<div id="discussion_cards" class="row g-1 text-center"></div>
     
     <!-- Ini untuk AJAX -->
     <div class="modal fade" id="addDiscussionModal" tabindex="-1" aria-labelledby="addDiscussionLabel" aria-hidden="true">
@@ -160,7 +166,7 @@
                     <form id="form" onsubmit="return false;" >
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="book_title" class="col-form-label">Book title:</label>
+                            <label for="book_title" class="col-form-label">Judul buku:</label>
                             <input type="text" class="form-control" id="book_title" name="book_title"></input>
                         </div>
                         <div class="mb-3">
@@ -168,7 +174,7 @@
                             <input type="number" class="form-control" id="rating" name="rating" min="0" max="5"></input>
                         </div>
                         <div class="mb-3">
-                            <label for="review" class="col-form-label">Review:</label>
+                            <label for="review" class="col-form-label">Ulasan:</label>
                             <textarea class="form-control" id="review" name="review"></textarea>
                         </div>
                     </form>
@@ -181,7 +187,9 @@
         </div>
     </div>
     
+    {% if user.is_authenticated %}
     <button type="button" class="floating-btn" data-bs-toggle="modal" data-bs-target="#addDiscussionModal">Tambahkan Diskusi</button>
+    {% endif %}
 
     <script>
         async function getHeader() {
@@ -190,49 +198,34 @@
 
         async function refreshDiscussion() {
             const discussionCardsContainer = document.getElementById("discussion_cards");
-
+            discussionCardsContainer.innerHTML = '';
             const header = await getHeader();
             
-            header.forEach((item, index) => {
-                console.log("Item:", item); // Add this line for debugging
-                console.log("Item fields:", item.date); // Add this line for debugging
+            header.forEach((item) => {
                 const card = document.createElement("div");
-                card.classList.add("discussion_cards", "mb-4");
+                card.classList.add("discussion_cards");
                 const cardContent = `
-                <div class="card">
-                    <div class="card-header">
-                        <p>Added by <b>${item.user}</b> on <b>${item.date_added}</b></p>
-                    </div>
-                    <div class="card-body">
-                        <div class="card mb-3" style="max-width: 540px;">
-                          <div class="row g-0">
-                            <div class="col-md-4">
-                                <h4 class="card-title">${item.book_info.book_title}</h4>
-                                <img src="${item.book_info.image_url_s}" alt="Book Image" class="img-fluid">
-                                <p class="card-text">ISBN: ${item.book_info.isbn}</p>
-                                <p class="card-text">Written by: ${item.book_info.author}</p>
-                                <p class="card-text">Published by: ${item.book_info.publisher}</p>
-                                <p class="card-text">Published on: ${item.book_info.published_year}</p>
-                            </div>
-                            <div class="col-md-8">
-                              <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <p class="card-text">Rating:</p>
-                                    <p class="card-text">${item.rating} / 5</p>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <p class="card-text">Review:</p>
-                                    <p class="card-text">${item.review}</p>
-                                </div>
-                                  <small class="text-muted">Last updated 3 mins ago</small>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                <div class="container my-2" style="padding: 2%; background-color: var(--text)">
+                    <div class="row justify-content-md-center" style="text-align: left">
+                      <div class="col col-lg-1">
+                        <img src="${item.book_info.image_url_s}" alt="Cover Buku" style="height: 100px; width: auto;">
+                      </div>
+                      <div class="col-md-5">
+                        <h5 class="card-title">${item.book_info.book_title}</h4>
+                            <p class="card-text">ISBN: ${item.book_info.isbn}</p>
+                            <p class="card-text">Ditulis oleh: ${item.book_info.author}</p>
+                            <p class="card-text">Dipublikasikan oleh: ${item.book_info.publisher}</p>
+                            <p class="card-text">Dipublikasikan pada: ${item.book_info.published_year}</p>
+                      </div>
+                      <div class="col md-auto">
+                            <p class="card-text">Rating: <b>${item.rating}</b> dari 5</p>
+                            <p class="card-text">Ulasan:</p>
+                            <p class="card-text">${item.review}</p>
                       </div>
                     </div>
-                    <div class="card-footer text-muted">
-                        <p> reply </p>
+                    <div class="row justify-content-md-center" style="text-align: center">
+                        <p></p>
+                        <p class="card-text">Ditambahkan pada: ${item.date_added} | Oleh: ${item.user} </p>
                     </div>
                 </div>
                 `;
