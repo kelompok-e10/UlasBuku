@@ -165,6 +165,10 @@
             <a href="{% url 'book:show_main_add_book' %}">Lihat Buku</a>
             {% endif %}
             <a href="{% url 'send_messages:show_messages' %}">Pesan</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'user_profile:view_profile' username=user.username %}">Profil</a>
+            {% endif %}
+
         </div>
 
         <!-- Right Part -->
