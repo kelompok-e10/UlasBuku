@@ -1,97 +1,89 @@
-{% extends 'base.html' %} {% block meta %}
-<title>Register</title>
-{% endblock meta %} {% block content %}
-<div class="register-container">
-  <div class="register-form">
-    <h1>Register</h1>
+{% extends 'base.html' %} 
 
-    <form method="POST">
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="username" style="text-align: left">Username:</label>
-        <input
-          type="text"
-          name="username"
-          id="username"
-          class="form-control"
-          placeholder="Username"
-          required
-          style="text-align: left"
-        />
-      </div>
-      <div class="form-group">
-        <label for="password1" style="text-align: left">Password:</label>
-        <input
-          type="password"
-          name="password1"
-          id="password1"
-          class="form-control"
-          placeholder="Password"
-          required
-          style="text-align: left"
-        />
-      </div>
-      <div class="form-group">
-        <label for="password2" style="text-align: left"
-          >Confirm Password:</label
-        >
-        <input
-          type="password"
-          name="password2"
-          id="password2"
-          class="form-control"
-          placeholder="Confirm Password"
-          required
-          style="text-align: left"
-        />
-      </div>
-      <div class="form-group">
-        <button type="submit" name="submit" class="btn btn-primary">
-          Register
-        </button>
-      </div>
-    </form>
+{% block meta %}
+<head>
+  <title>Register - UlasBuku</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-image: url('https://images.unsplash.com/photo-1588580000645-4562a6d2c839?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+      background-size: auto;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+    form {
+        padding: 40px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    h1 {
+        text-align: center;
+    }
+    table {
+        margin-bottom: 3px;
+    }
+    input[type="text"],
+    input[type="password"] {
+        width: 90%; 
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        text-align: left;
+    }
+    span[class="helptext"] {
+        font-size: smaller;
+    }
+    ul {
+        text-align: left;
+    }
+    th {
+        text-align: center;
+        margin-right: auto;
+    }
+    td {
+        text-align: center;
+        width: auto;
+    }
+    span .helptext {
+        text-align: center;
+    }
+  </style>
+</head>
+{% endblock meta %}
 
-    {% if messagesq %}
-    <ul class="messages">
-      {% for message in messages %}
-      <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+{% block content %}  
+
+<div class="container min-vh-100 d-flex justify-content-center align-items-center">       
+  <form method="POST">
+
+  <div class="page-header">
+      <a href="{% url 'main:login' %}" class="text-decoration-none">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+      </svg>
+      &nbsp; <u>back</u>
+      <span class="glyphicon glyphicon-plus"></span>
+      </a>
+      <h2 class="text-center">Register</h2>
   </div>
+
+  </br>
+
+      {% csrf_token %}  
+      <table>  
+          {{ form.as_table }}  
+          <tr>  
+              <td></td>
+          </tr>  
+      </table>  
+  </br>
+      <div class="text-center">
+          <button type="submit" class="btn btn-primary">Register</button>
+      </div>
+  </form>
 </div>
 
-<style>
-  .register-container {
-    text-align: center;
-    margin-top: 50px;
-  }
-
-  .register-form {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-  }
-
-  .form-group {
-    margin-bottom: 20px;
-  }
-
-  label {
-    font-weight: bold;
-  }
-
-  .btn-primary {
-    background-color: #007bff;
-    color: #fff;
-  }
-
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
-</style>
 {% endblock content %}

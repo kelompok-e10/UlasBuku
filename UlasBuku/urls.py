@@ -23,4 +23,5 @@ urlpatterns = [
     path("api/books/", include("book.urls")),
     path("send_messages/", include("send_messages.urls")),
     path("user_profile/", include("user_profile.urls")),
+    path("forum_discussion/", include("forum_discussion.urls")),
 ]

@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'book',
     'send_messages',
     'user_profile',
+    'forum_discussion',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

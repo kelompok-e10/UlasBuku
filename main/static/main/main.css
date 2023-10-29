@@ -21,17 +21,20 @@ html {
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: var(--bg);
   color: #fff;
 }
 
-/* Navbar */
+nav a {
+  text-decoration: none;
+  color: #fff;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.4rem 7%;
-  background-color: rgba(1, 1, 1, 0.8);
+  color: #fff;
 
   position: fixed;
   top: 0;
