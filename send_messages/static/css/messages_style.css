@@ -82,7 +82,7 @@
     transform: scaleX(0.5);
   }
   
-  .navbar .navbar-right a{
+  .navbar .navbar-right{
     color: #fff;
     display: inline-block;
     font-size: 1.3rem;
