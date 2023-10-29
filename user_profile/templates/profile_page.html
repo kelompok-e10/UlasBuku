@@ -29,7 +29,7 @@
 
     <!-- Right Part -->
     <div class="navbar-right">
-        <p>Welcome, {{user}}</p>
+        <p>Welcome, {{ request.user.username }}</p>
         <a href="{% url 'main:logout' %}">Logout</a>
     </div>
     
