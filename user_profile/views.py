@@ -2,15 +2,16 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from user_profile.models import Profile
 from django.contrib.auth.models import User
-from main.views import login_request, register_request
 from django.contrib.auth.decorators import login_required
+from main.models import Forum
 
-@login_required
 def view_profile(request, username):
     user = get_object_or_404(User, username=username)
+    my_forums = Forum.objects.filter(author=user)
 
     context = {
         'user': user,
+        'my_forums': my_forums,
     }
 
     return render(request, 'profile_page.html', context)
