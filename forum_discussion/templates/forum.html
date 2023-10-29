@@ -128,12 +128,13 @@
             <a href="{% url 'forum_discussion:view_forum' %}">Forum</a>
             <a href="{% url 'book:show_main_add_book' %}">Tambah Buku</a>
             <a href="{% url 'send_messages:show_messages' %}">Pesan</a>
+            <a href="{% url 'user_profile:view_profile' username=user.username %}">Profil</a>
         </div>
         
         <!-- Right Part -->
         {% if user.is_authenticated %}
         <div class="navbar-right">
-            <a style="margin-right: 0;">Welcome, <a href="{% url 'user_profile:view_profile' username=user.username %}">{{ user.username }}</a></a>
+            <a style="margin-right: 0;">Welcome,{{ user.username }}</a>
             <a href="{% url 'main:logout' %}">Logout</a>
         </div>
         {% else %}

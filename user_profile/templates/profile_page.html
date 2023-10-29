@@ -1,39 +1,131 @@
-{% extends 'base.html' %} 
-{% load static %} {% block meta %}
-<title>ProfilePage</title>
-<link rel="stylesheet" href="{% static 'main/main.css' %}" />
-<link rel="stylesheet" href="{% static 'user_profile/user_profile.css' %}" />
+{% extends "base.html" %}
+
+{% block meta %}
+    <title>Forum - UlasBuku</title>
+
+    <style>
+        :root {
+            --primary: #5a6794;
+            --bg: #8794c0;
+            --text: #eaf2d7;
+            --text1: #ffa69e;
+            --text2: #ff7e6b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            border: none;
+            text-decoration: none;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.4rem 7%;
+            color: #fff;
+        
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+        }
+        
+        .navbar .navbar-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fff;
+            font-style: italic;
+        }
+        
+        .navbar .navbar-logo span {
+            color: var(--primary);
+        }
+        
+        .navbar .navbar-middle a {
+            color: #fff;
+            display: inline-block;
+            font-size: 1.3rem;
+            margin: 0 2rem;
+        }
+        
+        .navbar .navbar-middle a:hover {
+            color: var(--primary);
+        }
+        
+        .navbar .navbar-middle a::after {
+            content: '';
+            display: block;
+            padding-bottom: 0.1rem;
+            border-bottom: 0.05rem solid var(--primary);
+            transform: scaleX(0);
+            transition: 0.2s linear;
+        }
+        
+        .navbar .navbar-middle a:hover::after {
+            transform: scaleX(0.5);
+        }
+        
+        .navbar .navbar-right a{
+            color: #fff;
+            display: inline-block;
+            font-size: 1.3rem;
+            margin: 0 1rem;
+        }
+       
+    </style>
 
 {% endblock meta %}
 
 {% block content %}
-
+<body style="background-color: var(--bg);">
 <!-- Navbar start -->
-<nav class="navbar">
-    <!-- Navbar logo -->
-    <a href="#" class="navbar-logo"> Ulas<span>Buku</span></a>
-
-
-    <!-- Middle Part -->
-    <div class="navbar-middle">
-      <a href="{% url 'main:homepage' %}">Tentang</a>
-      <a href="{% url 'forum_discussin:view_forum' %}">Forum</a>
-      {% if user.is_authenticated %}
-      <a href="{% url 'book:show_main_add_book' %}">Tambah Buku</a>
-      {% endif %}
-      <a href="{% url 'send_messages:show_messages' %}">Pesan</a>
-      {% if user.is_authenticated %}
-        <a href="{% url 'user_profile:view_profile' username=user.username %}">Profil</a>
-      {% endif %}
+<nav class="navbar px-5" style="background-color: rgba(1, 1, 1, 0.8);">
+    <div class="container-fluid my-2">
+        <!-- Navbar logo -->
+        <div class="navbar-logo">
+            <a>Ulas<span>Buku</span></a>
+        </div>
+        
+        <!-- Middle Part -->
+        <div class="navbar-middle">
+            <a href="{% url 'main:homepage' %}">Tentang</a>
+            <a href="{% url 'forum_discussion:view_forum' %}">Forum</a>
+            <a href="{% url 'book:show_main_add_book' %}">Tambah Buku</a>
+            <a href="{% url 'send_messages:show_messages' %}">Pesan</a>
+            <a href="{% url 'user_profile:view_profile' username=request.user.username %}">Profil</a>
+        </div>
+        
+        <!-- Right Part -->
+        {% if user.is_authenticated %}
+        <div class="navbar-right">
+            <a style="margin-right: 0;">Welcome,{{ request.user.username }}</a>
+            <a href="{% url 'main:logout' %}">Logout</a>
+        </div>
+        {% else %}
+        <div class="navbar-right">
+            <a href="{% url 'main:login' %}">Login</a>
+        </div>
+        {% endif %}
     </div>
-
-    <!-- Right Part -->
-    <div class="navbar-right">
-        <p>Welcome, {{ request.user.username }}</p>
-        <a href="{% url 'main:logout' %}">Logout</a>
-    </div>
-    
-
 </nav>
 
 
@@ -46,7 +138,7 @@
 
     <div class="row">
       <div class="col-lg-4">
-        <div class="card mb-4">
+        <div class="card mb-4" style="background-color: #eaf2d7;">
           <div class="card-body text-center">
               <h2>{{ user }}</h2>
               <!-- Menampilkan deskripsi  -->
@@ -55,7 +147,7 @@
               
               <!-- Tombol untuk membuka edit profile dan description -->
               {% if user == request.user %}
-                  <button class="btn btn-primary" id="addDescriptionBtn">Edit Description</button>
+                  <button class="btn btn-primary custom-button" id="addDescriptionBtn">Edit Description</button>
                   <button class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
                   <form id="addDescriptionForm" class="description-form" style="display: none;">
                       {% csrf_token %}
@@ -92,7 +184,7 @@
         </div>
       </div>
       <div class="col-lg-8">
-          <div class="card mb-4">
+        <div class="card mb-4" style="background-color: #eaf2d7;">
             <div class="card-body">
               <div class="row">
                 <div class="col-sm-3">
@@ -134,7 +226,7 @@
         </div>
         
         <div class="row">
-            <div class="card mb-4 mb-md-0">
+          <div class="card mb-4" style="background-color: #eaf2d7;">
               <div class="card-body">
                 <h4 class="card-title">My Forum</h4>
                   <ul class="list-group" style="max-height: 300px; overflow-y: auto;">
