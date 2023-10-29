@@ -1,32 +1,20 @@
+{% extends "base.html" %}
+
 {% block meta %}
 <head>
-  <title>Login</title>
+  <title>Login - UlasBuku</title>
   <style>
-    :root {
-      --primary: #5a6794;
-      --bg: #8794c0;
-      --text: #eaf2d7;
-      --text1: #ffa69e;
-      --text2: #ff7e6b;
+    body {
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    background-image: url('https://images.unsplash.com/photo-1588580000645-4562a6d2c839?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      outline: none;
-      border: black;
-      text-decoration: none;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    .login {
-      width: 300px;
-      height: 100vh;
-      margin: 0 auto;
-      text-align: center;
+    i {
+        font-size: 60px;
+        padding-bottom: 17px;
     }
 
     form {
@@ -64,304 +52,64 @@
 
     p {
       text-align: left;
+
+    form {
+        text-align: center;
+        padding: 40px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    input {
+        text-align: center;
+
     }
   </style>
 </head>
-{% endblock meta %} {% block content %}
+{% endblock meta %}
 
-<div class="login">
-  <form method="POST" action="">
-    {% csrf_token %}
+{% block content %}
 
-    <h1 id="login writing">Login</h1>
-    <p>Username</p>
-    <input
-      type="text"
-      name="username"
-      placeholder="Username"
-      class="form-control"
-    />
+<div class="login container min-vh-100 d-flex justify-content-center align-items-center">
+    <div class="login-fields">
+    <form method="POST" action="">
+        {% csrf_token %}
+        <table>
+        <div class="title-row">
+            <h5><b>Login</b></h5>
+        </div>
+    </br>
+        <div class="form-group">
+          <label for="InputUsername">Username:</label>
+          <input type="username" class="form-control" id="InputUsername" name="username" placeholder="Enter your username" >
+        </div>
+    </br>
+        <div class="form-group">
+          <label for="InputPassword">Password:</label>
+          <input type="password" class="form-control" id="InputPassword" name="password" placeholder="Enter your password">
+        </div>
+    </br>
+        <div class="form-group">
+            <input class="btn btn-primary" style="background-color: rgb(90, 103, 148); border: none;" type="submit" value="Login"></input>
+        </div>
+    </div>
+</div>
 
-    <p>Password</p>
-    <input
-      type="password"
-      name="password"
-      placeholder="Password"
-      class="form-control"
-    />
-
-    <input class="btn login_btn" type="submit" value="Login" />
-  </form>
-
-  {% if messages %}
-  <ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %} Don't have an account yet?
-  <a href="{% url 'main:register' %}">Register Now</a>
+    </br>   
+        <div class="form-group">
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <p>Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a></p>
+        </div>
+    </table>
+        </form>
+        
+    </div>
 </div>
 
 {% endblock content %}
-
-<!-- <!DOCTYPE html>
-
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-
-    <title>Login</title>
-
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Quicksand", sans-serif;
-      }
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background: #000;
-      }
-      section {
-        position: absolute;
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 2px;
-        flex-wrap: wrap;
-        overflow: hidden;
-      }
-      section::before {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(#000, #0f0, #000);
-        animation: animate 5s linear infinite;
-      }
-      @keyframes animate {
-        0% {
-          transform: translateY(-100%);
-        }
-        100% {
-          transform: translateY(100%);
-        }
-      }
-      section span {
-        position: relative;
-        display: block;
-        width: calc(6.25vw - 2px);
-        height: calc(6.25vw - 2px);
-        background: #181818;
-        z-index: 2;
-        transition: 1.5s;
-      }
-      section span:hover {
-        background: #0f0;
-        transition: 0s;
-      }
-
-      section .signin {
-        position: absolute;
-        width: 400px;
-        background: #222;
-        z-index: 1000;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 40px;
-        border-radius: 4px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 9);
-      }
-      section .signin .content {
-        position: relative;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        gap: 40px;
-      }
-      section .signin .content h2 {
-        font-size: 2em;
-        color: #0f0;
-        text-transform: uppercase;
-      }
-      section .signin .content .form {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 25px;
-      }
-      section .signin .content .form .inputBox {
-        position: relative;
-        width: 100%;
-      }
-      section .signin .content .form .inputBox input {
-        position: relative;
-        width: 100%;
-        background: #333;
-        border: none;
-        outline: none;
-        padding: 25px 10px 7.5px;
-        border-radius: 4px;
-        color: #fff;
-        font-weight: 500;
-        font-size: 1em;
-      }
-      section .signin .content .form .inputBox i {
-        position: absolute;
-        left: 0;
-        padding: 15px 10px;
-        font-style: normal;
-        color: #aaa;
-        transition: 0.5s;
-        pointer-events: none;
-      }
-      .signin .content .form .inputBox input:focus ~ i,
-      .signin .content .form .inputBox input:valid ~ i {
-        transform: translateY(-7.5px);
-        font-size: 0.8em;
-        color: #fff;
-      }
-      .signin .content .form .links {
-        position: relative;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-      }
-      .signin .content .form .links a {
-        color: #fff;
-        text-decoration: none;
-      }
-      .signin .content .form .links a:nth-child(2) {
-        color: #0f0;
-        font-weight: 600;
-      }
-      .signin .content .form .inputBox input[type="submit"] {
-        padding: 10px;
-        background: #0f0;
-        color: #000;
-        font-weight: 600;
-        font-size: 1.35em;
-        letter-spacing: 0.05em;
-        cursor: pointer;
-      }
-      input[type="submit"]:active {
-        opacity: 0.6;
-      }
-      @media (max-width: 900px) {
-        section span {
-          width: calc(10vw - 2px);
-          height: calc(10vw - 2px);
-        }
-      }
-      @media (max-width: 600px) {
-        section span {
-          width: calc(20vw - 2px);
-          height: calc(20vw - 2px);
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <!-- partial:index.partial.html -->
-
-<!-- <section>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-      <span></span> <span></span> <span></span> <span></span> <span></span>
-
-      <div class="signin">
-        <div class="content">
-          <h2>Sign In</h2>
-
-          <form class="form" method="POST" action="">
-            {% csrf_token %}
-            <div class="inputBox">
-              <input type="text" required /> <i>Username</i>
-            </div>
-
-            <div class="inputBox">
-              <input type="password" required /> <i>Password</i>
-            </div>
-
-            <div class="links">
-              <a href="{% url 'main:register' %}">Signup</a>
-            </div>
-
-            <div class="inputBox">
-              <input class="login_btn" type="submit" value="Login" />
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-     partial -->
-<!-- </body>
-  {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</html> -->
