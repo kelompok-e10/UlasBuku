@@ -40,13 +40,6 @@
     z-index: 9999;
   }
 
-  .navbar .navbar-middle .messages-label{
-    color:#8794c0;
-    font-size: 1.3rem;
-    margin: 0 1rem;
-
-  }
-  
   .navbar .navbar-logo {
     font-size: 2rem;
     font-weight: 700;

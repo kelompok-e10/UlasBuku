@@ -25,13 +25,6 @@ body {
   color: #fff;
 }
 
-.navbar .navbar-middle .add-book-label{
-  color:#8794c0;
-  font-size: 1.3rem;
-  margin: 0 1rem;
-
-}
-
 /* Navbar */
 .navbar {
   display: flex;
