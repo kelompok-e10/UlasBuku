@@ -2,36 +2,37 @@
 <title>Tambah Buku</title>
 <link rel="stylesheet" href="{% static 'main/main.css' %}" />
 {% endblock meta %} {% block content %}
-<!-- Navbar start -->
-<nav class="navbar">
-  <!-- Navbar logo -->
-  <a href="/" class="navbar-logo"> Ulas<span>Buku</span></a>
-
-  <!-- Middle Part -->
-  <div class="navbar-middle">
-    <a href="{% url 'main:homepage' %}">Tentang</a>
-    <a href="{% url 'forum_discussion:view_forum' %}">Forum</a>
-    <a href="{% url 'book:show_main_add_book' %}">Tambah Buku</a>
-    <a href="{% url 'send_messages:show_messages' %}">Pesan</a>
-    <a href="{% url 'user_profile:view_profile' username=request.user.username %}">Profil</a>
-  </div>
-
-  <!-- Right Part -->
-  <!-- <div class="navbar-right">
-    <a href="#Login">Login</a>
-  </div> -->
-  {% if user.is_authenticated %}
-    <div class="navbar-right">
-      Welcome, {{ user.username }}
-      <a href="{% url 'main:logout' %}">Logout</a>
-    </div>
-    {% else %}
-    <div class="navbar-right">
-      <a href="{% url 'main:login' %}">Login</a>
-    </div>
-    {% endif %}
-</nav>
-<!-- Navbar end -->
+<body style="background-color: var(--bg);">
+  <!-- Navbar start -->
+  <nav class="navbar px-5" style="background-color: rgba(1, 1, 1, 0.8);">
+      <div class="container-fluid my-2">
+          <!-- Navbar logo -->
+          <div class="navbar-logo">
+              <a>Ulas<span>Buku</span></a>
+          </div>
+          
+          <!-- Middle Part -->
+          <div class="navbar-middle">
+              <a href="{% url 'main:homepage' %}">Tentang</a>
+              <a href="{% url 'forum_discussion:view_forum' %}">Forum</a>
+              <a href="{% url 'book:show_main_add_book' %}">Tambah Buku</a>
+              <a href="{% url 'send_messages:show_messages' %}">Pesan</a>
+              <a href="{% url 'user_profile:view_profile' username=user.username %}">Profil</a>
+          </div>
+          
+          <!-- Right Part -->
+          {% if user.is_authenticated %}
+          <div class="navbar-right">
+              <a style="margin-right: 0;">Welcome,{{ user.username }}</a>
+              <a href="{% url 'main:logout' %}">Logout</a>
+          </div>
+          {% else %}
+          <div class="navbar-right">
+              <a href="{% url 'main:login' %}">Login</a>
+          </div>
+          {% endif %}
+      </div>
+  </nav>
 
 <!-- cards -->
 <div id="book_cards"></div>
