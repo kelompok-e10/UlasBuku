@@ -3,11 +3,11 @@ from django.shortcuts import get_object_or_404, redirect, render
 from user_profile.models import Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from main.models import Forum
+from forum_discussion.models import Header
 
 def view_profile(request, username):
     user = get_object_or_404(User, username=username)
-    my_forums = Forum.objects.filter(author=user)
+    my_forums = Header.objects.filter(user=user)
 
     context = {
         'user': user,
