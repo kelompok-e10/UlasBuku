@@ -1,72 +1,90 @@
-#user-list {
-    width: 360px;
-}
-
-#message-list {}
-
-.textarea-resize textarea {
-    display: block;
-    width: 100%;
-    resize: both;
-}
-
-
-.navbar {
+:root {
+    --primary: #5a6794;
+    --bg: #8794c0;
+    --text: #eaf2d7;
+    --text1: #ffa69e;
+    --text2: #ff7e6b;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg);
+    color: #fff;
+  }
+  
+  /* Navbar */
+  .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1.4rem 7%;
     background-color: rgba(1, 1, 1, 0.8);
-
+  
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 9999;
-}
+  }
 
+  .navbar .navbar-middle .messages-label{
+    color:#8794c0;
+    font-size: 1.3rem;
+    margin: 0 1rem;
 
-.navbar .navbar-logo {
+  }
+  
+  .navbar .navbar-logo {
     font-size: 2rem;
     font-weight: 700;
     color: #fff;
     font-style: italic;
-}
-
-.navbar .navbar-logo span {
+  }
+  
+  .navbar .navbar-logo span {
     color: var(--primary);
-}
-
-.navbar .navbar-middle a {
+  }
+  
+  .navbar .navbar-middle a {
     color: #fff;
-    display: block;
-    padding-bottom: 0.1rem;
-    border-bottom: 0.05rem solid var(--primary);
-    transform: scaleX(0);
-    transition: 0.2s linear;
-}
-
-.navbar .navbar-middle a:hover {
+    display: inline-block;
+    font-size: 1.3rem;
+    margin: 0 2rem;
+  }
+  
+  .navbar .navbar-middle a:hover {
     color: var(--primary);
-}
-
-.navbar .navbar-middle a::after {
+  }
+  
+  .navbar .navbar-middle a::after {
     content: '';
     display: block;
     padding-bottom: 0.1rem;
     border-bottom: 0.05rem solid var(--primary);
     transform: scaleX(0);
     transition: 0.2s linear;
-}
-
-.navbar .navbar-middle a:hover::after {
+  }
+  
+  .navbar .navbar-middle a:hover::after {
     transform: scaleX(0.5);
-}
-
-.navbar .navbar-right a{
+  }
+  
+  .navbar .navbar-right a{
     color: #fff;
     display: inline-block;
     font-size: 1.3rem;
     margin: 0 1rem;
-}
-
+  }
