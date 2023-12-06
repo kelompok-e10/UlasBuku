@@ -7,11 +7,11 @@ from forum_discussion.models import Header
 
 def view_profile(request, username):
     user = get_object_or_404(User, username=username)
-    my_forums = Header.objects.filter(user=user)
+    forum = Header.objects.filter(user=user)
 
     context = {
         'user': user,
-        'my_forums': my_forums,
+        'forum': forum,
     }
 
     return render(request, 'profile_page.html', context)
