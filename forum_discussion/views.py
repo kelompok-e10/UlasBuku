@@ -41,7 +41,7 @@ def delete_discussion(request, id):
 @csrf_exempt
 def add_discussion_ajax(request):
     if request.method == 'POST':
-        title = request.POST.get("title")
+        title = request.POST.get("book_title")
         rating = request.POST.get("rating")
         try:
             rating = float(rating)

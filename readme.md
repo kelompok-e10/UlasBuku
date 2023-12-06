@@ -21,11 +21,11 @@ Judul Aplikasi: **UlasBuku**
 Aplikasi **UlasBuku** akan memiliki beberapa modul utama, termasuk:
 1. **Forum Buku**: Pengguna dapat berpartisipasi dalam diskusi dan berbagi ulasan tentang buku-buku tertentu.
 2. **Tambah Buku**: Pengguna dapat menambahkan informasi tentang buku-buku yang telah mereka baca.
-3. **Profile**: Pengguna dapat melihat profil mereka sendiri dan profil pengguna lainnya.
+3. **Profile**: Pengguna dapat melihat profil mereka sendiri.
 4. **Pesan Sesama Pengguna**: Pengguna dapat berkomunikasi satu sama lain melalui pesan.
    
 ## Sumber Data
-Data mengenai katalog buku akan diperoleh melalui [**Google Books API**](https://developers.google.com/books/). API ini akan memberikan informasi tentang buku-buku yang tersedia, termasuk judul, penulis, sinopsis, dan sampul buku.
+Data mengenai katalog buku akan diperoleh melalui [**Kaggle**](https://www.kaggle.com/datasets/arashnic/book-recommendation-dataset/). API ini akan memberikan informasi tentang buku-buku yang tersedia, termasuk judul, penulis, tahun publikasi, penerbit, dan sampul buku.
 
 ## Peran Pengguna
 Aplikasi **UlasBuku** akan memiliki beberapa peran pengguna beserta deskripsinya:
@@ -33,24 +33,19 @@ Aplikasi **UlasBuku** akan memiliki beberapa peran pengguna beserta deskripsinya
 1. **Unregistered User**: Pengguna yang belum mendaftar atau login.
    - Melihat forum buku.
    - Melihat daftar buku yang ada.
-   - Mencari judul buku.
-   - Mencari ulasan buku tertentu.
-   - Melihat profil pengguna lain.
+   - Melihat rekomendasi buku di homepage.
 
 2. **Registered/Login User**: Pengguna yang telah mendaftar dan login.
    - Melihat forum buku.
-   - Menambahkan informasi tentang buku yang telah mereka baca.
    - Berpartisipasi dalam diskusi forum.
-   - Membaca ulasan dan komentar pengguna lain.
+   - Melihat rekomendasi buku di homepage.
+   - Menambahkan informasi tentang buku yang telah mereka baca.
    - Mengirim dan menerima pesan dari pengguna lain.
-   - Melihat profil diri sendiri dan pengguna lain.
-   - Mendapatkan rewards ketika ulasan atau pesan mereka diapresiasi oleh pengguna lain.
+   - Melihat profil diri sendiri.
 
 3. **Admin**: Pengguna dengan hak akses administratif.
    - Menghapus buku dari database.
    - Menambahkan buku baru ke database.
-   - Terlibat dalam diskusi di forum dengan role yang terlihat.
-   - Memberikan role khusus kepada pengguna yang aktif dalam diskusi, agar mereka dapat ditampilkan di landing page.
 
 ## Lisensi
 Aplikasi ini akan dilisensikan di bawah [lisensi MIT](LICENSE).
