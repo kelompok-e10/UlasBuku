@@ -24,7 +24,7 @@ def show_messages(request):
 
     return HttpResponse(template.render(context, request))
 
-login_required(login_url="main:login")
+@login_required(login_url="main:login")
 def user_messages_by_id(request, selected_user_id):
     selected_user = User.objects.get(id=selected_user_id)
     form = MessagesForm(request.POST or None)
