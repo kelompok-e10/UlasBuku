@@ -8,4 +8,5 @@ urlpatterns = [
     path('<str:username>/add_description/', views.add_description, name='add_description'),
     path('<str:username>/get_description/', views.get_json, name='get_description'),
     path('<str:username>/edit_profile/', views.edit_profile, name='edit_profile'),
+    path('<str:username>/get_json/', views.get_json, name='get_json'),
 ]
