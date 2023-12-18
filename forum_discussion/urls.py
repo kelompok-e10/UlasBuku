@@ -9,4 +9,5 @@ urlpatterns = [
     path('add/', views.add_discussion_ajax, name='add_discussion_ajax'),
     path('reply/', views.add_reply_ajax, name='add_reply_ajax'),
     path('delete/<int:id>/', views.delete_discussion, name='delete_discussion'),
+    path('create_forum_flutter/', views.create_forum_flutter, name='create_forum_flutter')
 ]

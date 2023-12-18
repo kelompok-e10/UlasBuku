@@ -1,12 +1,16 @@
+import json
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth import logout
 import datetime
+
+from forum_discussion.models import Header
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def homepage(request):
@@ -43,3 +47,22 @@ def logout_request(request):
     response = HttpResponseRedirect(reverse("main:homepage")) 
     response.delete_cookie('last_login')
     return response
+
+@csrf_exempt
+def create_discussion_flutter(request):
+    if request.method == 'POST':
+        
+        data = json.loads(request.body)
+
+        new_thread = Header.objects.create(
+            user = request.user,
+            book_title = data["bookTitle"],
+            rating = int(data["rating"]),
+            review = data["review"]
+        )
+
+        new_thread.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
