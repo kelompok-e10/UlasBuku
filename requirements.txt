@@ -7,3 +7,4 @@ urllib3
 django-environ
 django-bootstrap-icons
 django-bootstrap5
+django-cors-headers

@@ -1,6 +1,11 @@
 import json
 from django.shortcuts import render
+<<<<<<< HEAD
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+=======
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import logout as auth_logout
+>>>>>>> e2fff03a5225263b5bc000460da424bc52c4bfa7
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
@@ -30,6 +35,7 @@ def login(request):
     else:
         return JsonResponse({
             "status": False,
+<<<<<<< HEAD
             "message": "Login gagal, periksa kembali email atau kata sandi."
         }, status=401)
 
@@ -78,6 +84,11 @@ def register(request):
             "message": "Registrasi berhasil! User dengan nama {username} berhasil dibuat."
         }, status=200)
         
+=======
+            "message": "Login gagal, periksa kembali username atau kata sandi."
+        }, status=401)
+    
+>>>>>>> e2fff03a5225263b5bc000460da424bc52c4bfa7
 @csrf_exempt
 def logout(request):
     username = request.user.username
@@ -87,7 +98,11 @@ def logout(request):
         return JsonResponse({
             "username": username,
             "status": True,
+<<<<<<< HEAD
             "message": "Logout berhasil. Sampai jumpa {username}!"
+=======
+            "message": "Logout berhasil!"
+>>>>>>> e2fff03a5225263b5bc000460da424bc52c4bfa7
         }, status=200)
     except:
         return JsonResponse({
