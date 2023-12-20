@@ -17,25 +17,10 @@ def get_books(request):
     return HttpResponse(serializers.serialize("json", data), 
                         content_type="application/json")
 
-@login_required
 def show_main_add_book(request):
     return render(request, 'book/add_book.html')
 
-
-@csrf_exempt
-def add_book_ajax(request):
-    if request.method == 'POST':
-        isbn = request.POST.get("isbn")
-        book_title = request.POST.get("book_title")
-        book_author = request.POST.get("book_author")
-        year_of_publication = request.POST.get("year_of_publication")
-        publisher = request.POST.get("publisher")
-        image_url_s = request.POST.get("image_url_s")
-        user = request.user
-
-        new_book = Book(isbn=isbn, book_title=book_title, book_author=book_author, year_of_publication=year_of_publication, publisher=publisher, image_url_s=image_url_s, user=user)
-        new_book.save()
-
-        return HttpResponse(b"CREATED", status=201)
-
-    return HttpResponseNotFound()
+def show_json_by_id(request, id):
+    data = Book.objects.filter(id=id)
+    return HttpResponse(serializers.serialize("json", data), 
+                        content_type="application/json")
