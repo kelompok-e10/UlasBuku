@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.core import serializers
@@ -29,8 +30,8 @@ def get_header_json(request):
                 'date_added': header.date,
                 'user': header.user.username if header.user else "Anonymous",
             })
-
     return JsonResponse(discussion_data, safe=False)
+    # return HttpResponse(serializers.serialize('json', discussion_data), content_type='application/json')
 
 def delete_discussion(request, id):
     product = Header.objects.get(pk = id)
@@ -70,3 +71,23 @@ def add_reply_ajax(request):
         return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
+
+@csrf_exempt
+def create_forum_flutter(request):
+    if request.method == 'POST':
+        
+        data = json.loads(request.body)
+
+        new_forum = Header.objects.create(
+            user = request.user,
+            book_title = data["bookTitle"],
+            rating = int(data["rating"]),
+            review = data["review"],
+            date = data["date"],
+        )
+
+        new_forum.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
