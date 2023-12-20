@@ -35,42 +35,45 @@ def login(request):
 
 @csrf_exempt
 def register(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    password_confirmation = request.POST['password_confirmation']
+    # print("ASUU")
+    data = json.loads(request.body)
+    
+    username = data['username']
+    password = data['password']
+    password_confirmation = data['password_confirmation']
 
-    # Password validation
-    if len(password) < 8:
-        return JsonResponse({
-            "status": False,
-            "message": "Registrasi gagal, password harus paling sedikit 8 karakter."
-        }, status=400)
-    elif not re.search("[A-Z]", password):
-        return JsonResponse({
-            "status": False,
-            "message": "Registrasi gagal, password harus memiliki setidaknya satu huruf kapital."
-        }, status=400)
-    elif not re.search("[0-9]", password):
-        return JsonResponse({
-            "status": False,
-            "message": "Registrasi gagal, password harus memiliki setidaknya satu angka."
-        }, status=400)
-    elif password != password_confirmation:
-        return JsonResponse({
-            "status": False,
-            "message": "Registrasi gagal, password dan password tidak sesuai."
-        }, status=400)
+    # # Password validation
+    # if len(password) < 8:
+    #     return JsonResponse({
+    #         "status": False,
+    #         "message": "Registrasi gagal, password harus paling sedikit 8 karakter."
+    #     }, status=400)
+    # elif not re.search("[A-Z]", password):
+    #     return JsonResponse({
+    #         "status": False,
+    #         "message": "Registrasi gagal, password harus memiliki setidaknya satu huruf kapital."
+    #     }, status=400)
+    # elif not re.search("[0-9]", password):
+    #     return JsonResponse({
+    #         "status": False,
+    #         "message": "Registrasi gagal, password harus memiliki setidaknya satu angka."
+    #     }, status=400)
+    # elif password != password_confirmation:
+    #     return JsonResponse({
+    #         "status": False,
+    #         "message": "Registrasi gagal, password dan password tidak sesuai."
+    #     }, status=400)
     
     # Username validation
-    if User.objects.filter(username=username).exists():
-        return JsonResponse({
-            "status": False,
-            "message": "Registrasi gagal, username telah digunakan."
-        }, status=400)
+    # if User.objects.filter(username=username).exists():
+    #     return JsonResponse({
+    #         "status": False,
+    #         "message": "Registrasi gagal, username telah digunakan."
+    #     }, status=400)
         
     # Create user
-    if (User.objects.create_user(username=username, password=password) != None):
-        user = User.objects.create_user(username=username, password=password)
+    if (User.objects.create_user(username=username, email=username, password=password) != None):
+        user = User.objects.create_user(username=username, email=username, password=password)
         user.save()
         return JsonResponse({
             "username": user.username,
