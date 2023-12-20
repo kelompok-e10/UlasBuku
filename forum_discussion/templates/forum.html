@@ -46,7 +46,6 @@
             top: 0;
             left: 0;
             right: 0;
-            z-index: 9999;
         }
         
         .navbar .navbar-logo {
@@ -169,7 +168,7 @@
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="book_title" class="col-form-label">Judul buku:</label>
-                            <input type="text" class="form-control" id="book_title" name="book_title"></input>
+                            <input type="text" class="form-control" id="book_title" name="book_title"></input>                            
                         </div>
                         <div class="mb-3">
                             <label for="rating" class="col-form-label">Rating (dari 5):</label>
@@ -248,7 +247,6 @@
         }
 
         document.getElementById("button_add").addEventListener("click", addDiscussion)
-
     </script>
 </body>
 {% endblock content %}
