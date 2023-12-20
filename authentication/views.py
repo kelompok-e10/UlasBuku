@@ -37,11 +37,11 @@ def login(request):
 def register(request):
     # print("ASUU")
     data = json.loads(request.body)
-    
-    username = data['username']
-    password = data['password']
-    password_confirmation = data['password_confirmation']
-
+    print(data);
+    username = data.get('username')
+    password = data.get('password')
+    password_confirmation = data.get('password_confirmation')
+ 
     # # Password validation
     # if len(password) < 8:
     #     return JsonResponse({
