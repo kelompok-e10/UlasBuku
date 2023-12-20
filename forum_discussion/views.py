@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.core import serializers
 from django.urls import reverse
+from django.contrib.auth import authenticate
 from book.models import Book
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -77,9 +78,12 @@ def create_forum_flutter(request):
     if request.method == 'POST':
         
         data = json.loads(request.body)
+        username = data['username']
+        password = data['password']
+        user = authenticate(username=username, password=password)
 
         new_forum = Header.objects.create(
-            user = request.user,
+            user = user,
             book_title = data["bookTitle"],
             rating = int(data["rating"]),
             review = data["review"],
