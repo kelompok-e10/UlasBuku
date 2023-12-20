@@ -5,6 +5,7 @@ from user_profile.models import Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from forum_discussion.models import Header
+from django.views.decorators.csrf import csrf_exempt
 
 def view_profile(request, username):
     user = get_object_or_404(User, username=username)
@@ -66,7 +67,8 @@ def edit_profile(request, username):
     else:
         return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
-@login_required
+@login_required 
+@csrf_exempt
 def update_profile_flutter(request, username):
     if request.method == 'POST':
         data = json.loads(request.body)
