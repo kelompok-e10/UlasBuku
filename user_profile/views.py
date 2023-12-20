@@ -1,3 +1,4 @@
+import json
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from user_profile.models import Profile
@@ -61,6 +62,31 @@ def edit_profile(request, username):
         user.profile.contact = contact
         user.profile.save()
         
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+@login_required
+def update_profile_flutter(request, username):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        # Get values sent via POST
+        description = data.get('description', '')
+        first_name = data.get('first_name', '')
+        last_name = data.get('last_name', '')
+        email = data.get('email', '')
+        contact = data.get('contact', '')
+
+        # Save changes to the user's profile
+        user = get_object_or_404(User, username=username)
+        user.profile.description = description
+        user.profile.first_name = first_name
+        user.profile.last_name = last_name
+        user.profile.email = email
+        user.profile.contact = contact
+        user.profile.save()
+
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False, 'error': 'Invalid request method'})
